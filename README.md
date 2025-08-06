@@ -1,9 +1,9 @@
 # Cybernetks
 ## Code • Create • Play
 
-Solo indie game & web developer 👨‍💻<br />
-I build, play, and talk games & development 🎮<br />
-Follow my journey for tips, progress, and behind-the-scenes stories: 
+One-person dev studio. <br />
+Freelance projects by day, indie games by night. <br />
+Code, creativity & behind-the-scenes.
 
 <ul>
   <li>Read my blog posts on <a href="https://www.cybernetks.be" target="_blank">Cybernetks.be</a></li>
