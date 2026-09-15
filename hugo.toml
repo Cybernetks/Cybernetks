@@ -1,0 +1,18 @@
+baseURL = 'https://cybernetks.be/'
+languageCode = 'en'
+defaultContentLanguage = 'en'
+title = 'Cybernetks'
+enableRobotsTXT = true
+disableKinds = ['taxonomy', 'term']
+contentDir = 'generated/content'
+
+[build]
+  noJSConfigInAssets = true
+
+[caches]
+  [caches.images]
+    dir = ':cacheDir/images'
+
+[security]
+  [security.funcs]
+    getenv = ['^HUGO_']

@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -euo pipefail
+: "${CYBERNETKS_VAULT:?Set CYBERNETKS_VAULT to the Obsidian vault root}"
+project_root="$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd -P)"
+publish_python="$project_root/.venv/bin/python"
+
+if [[ ! -x "$publish_python" ]]; then
+  printf '%s\n' 'error: Python 3.12 virtual environment is required at .venv. Create it with: python3.12 -m venv .venv' >&2
+  exit 1
+fi
+if ! "$publish_python" -c 'import sys; raise SystemExit(sys.version_info[:2] != (3, 12))'; then
+  printf '%s\n' 'error: .venv must use Python 3.12. Recreate it with: python3.12 -m venv .venv' >&2
+  exit 1
+fi
+if ! "$publish_python" -c 'import yaml'; then
+  printf '%s\n' 'error: .venv is missing pinned publisher dependencies. Install them with: .venv/bin/python -m pip install -r requirements.txt' >&2
+  exit 1
+fi
+if ! "$publish_python" -c 'import sys, yaml; raise SystemExit(yaml.__version__ != "6.0.2")'; then
+  printf '%s\n' 'error: .venv must provide PyYAML 6.0.2. Install pinned dependencies with: .venv/bin/python -m pip install -r requirements.txt' >&2
+  exit 1
+fi
+
+"$project_root/scripts/check-hugo"
+"$publish_python" -m tools.publish --vault "$CYBERNETKS_VAULT" --repository "$(pwd)"
+hugo --gc --minify --cleanDestinationDir

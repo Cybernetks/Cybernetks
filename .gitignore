@@ -1,1 +1,9 @@
 .worktrees/
+public/
+resources/
+.hugo_build.lock
+.publish-stage/
+.publish-backup/
+.venv/
+__pycache__/
+*.py[cod]

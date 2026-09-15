@@ -1,6 +1,25 @@
 # Cybernetks
 ## Code • Create • Play
 
+## Local site development
+
+Use Python 3.12 and Hugo Extended 0.164.0. Create an isolated Python environment
+and install the pinned dependencies:
+
+```bash
+python3.12 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+```
+
+The site commands are:
+
+```bash
+make test
+make build
+make preview
+make publish
+```
+
 One-person dev studio. <br />
 Freelance projects by day, indie games by night. <br />
 Code, creativity & behind-the-scenes.

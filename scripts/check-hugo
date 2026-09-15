@@ -1,0 +1,18 @@
+#!/bin/sh
+set -eu
+
+if ! command -v hugo >/dev/null 2>&1; then
+  printf '%s\n' 'error: Hugo Extended 0.164.0 is required, but hugo is not on PATH.' >&2
+  exit 1
+fi
+
+version="$(hugo version)"
+printf '%s\n' "$version"
+
+case "$version" in
+  "hugo v0.164.0+extended "* | "hugo v0.164.0-"*"+extended "*) ;;
+  *)
+    printf '%s\n' 'error: Hugo Extended 0.164.0 is required.' >&2
+    exit 1
+    ;;
+esac
