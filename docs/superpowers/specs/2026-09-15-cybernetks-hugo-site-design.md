@@ -215,7 +215,7 @@ Required shared front matter:
 
 ```yaml
 title: A clear public title
-status: published
+publication_status: published
 publish_date: 2026-09-15
 summary: A concise public description.
 url: https://www.cybernetks.be/existing-or-chosen-path/
@@ -223,9 +223,9 @@ url: https://www.cybernetks.be/existing-or-chosen-path/
 
 For existing notes, the exporter accepts the current full `www.cybernetks.be` URL and extracts its path. New notes may use either a site-relative path or the canonical `cybernetks.be` URL. The generated site's canonical host is always `cybernetks.be`.
 
-Type-specific fields add the publication kind, review month, project relations, imagery, and external actions. Draft notes may omit public-only fields until publication, but published notes must pass all validations.
+`publication_status` is deliberately separate from a project's lifecycle `status`, such as `Launching` or `Released`. Type-specific fields add the publication kind, review month, project relations, imagery, and external actions. Draft notes may omit public-only fields until publication, but published notes must pass all validations.
 
-Obsidian remains the only editorial source. Generated Hugo Markdown is not edited by hand because the next export replaces it.
+Obsidian remains the only editorial source. Generated Hugo Markdown and copied page resources are kept together under `generated/content/` and are not edited by hand because the next export replaces that directory as one unit.
 
 ## Publishing pipeline
 
@@ -234,7 +234,7 @@ Publishing is an explicit local command run from the Cybernetks repository.
 The pipeline is:
 
 1. Read the allowlisted Obsidian notes.
-2. Select only entries with `status: published`.
+2. Select only entries with `publication_status: published`.
 3. Parse and validate front matter before writing generated output.
 4. Classify old regular posts as Logs and remove `#NNN - ` from displayed Log titles.
 5. Preserve explicitly supplied URL paths.
@@ -254,14 +254,14 @@ The repository separates authored presentation code from generated content:
 
 ```text
 assets/                    Compiled styling and browser assets
-content/                   Generated public Markdown
+generated/content/         Atomically replaced public Markdown and page resources
 data/                      Site configuration and the URL migration manifest
 layouts/                   Base, section, taxonomy, and content templates
 static/                    Static brand assets and files
 tools/publish/             Obsidian export and validation code
 tests/                     Exporter and site-contract tests
 docs/superpowers/specs/    Approved design specifications
-hugo.toml                  Hugo configuration
+hugo.toml                  Hugo configuration and generated-content location
 ```
 
 Content-type templates are separate but share a base layout and small reusable partials. Project state-to-action selection is isolated from the project page layout so it can be tested independently.
