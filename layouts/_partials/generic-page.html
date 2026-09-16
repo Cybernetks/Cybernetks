@@ -1,0 +1,13 @@
+<article class="page" data-template="page">
+  <header>
+    <h1>{{ .Title }}</h1>
+    {{ with .Description }}<p class="page__summary">{{ . }}</p>{{ end }}
+  </header>
+  <div class="page__body">{{ .Content }}</div>
+  {{ with .Params.project }}
+    {{ $project := site.GetPage (printf "/projects/%s/" .) }}
+    {{ with $project }}
+      <p class="page__project-link"><a href="{{ .RelPermalink }}">Back to {{ .Title }}</a></p>
+    {{ end }}
+  {{ end }}
+</article>

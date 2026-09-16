@@ -35,7 +35,7 @@ def bundle_path(document: SourceDocument) -> Path:
             raise _document_error(document, "review_month must be YYYY-MM")
         return Path("snapshots") / review_month / "index.md"
     if document.kind == ContentKind.PROJECT:
-        return Path("projects") / _project_slug(document) / "index.md"
+        return Path("projects") / _project_slug(document) / "_index.md"
     if document.kind == ContentKind.PAGE:
         return Path(*_route_parts(_fixed_page_route(document))) / "index.md"
     raise _document_error(document, f"unsupported content kind: {document.kind}")

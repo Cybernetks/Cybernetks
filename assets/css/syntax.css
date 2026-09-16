@@ -1,0 +1,5 @@
+pre { color: #FFFFFF; }
+pre .chroma { color: #FFFFFF; background: #282C35; }
+pre .chroma .k, pre .chroma .kc, pre .chroma .kd, pre .chroma .kn { color: #C4A76A; }
+pre .chroma .s, pre .chroma .s1, pre .chroma .s2 { color: #FFFFFF; }
+pre .chroma .c, pre .chroma .c1, pre .chroma .cm { color: #C4A76A; }

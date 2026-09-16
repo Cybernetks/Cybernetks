@@ -1,1 +1,12 @@
-<footer></footer>
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <p>&copy; {{ now.Year }} Cybernetks</p>
+    <nav aria-label="Cybernetks elsewhere">
+      <ul class="footer-nav">
+        {{ range site.Data.navigation.footer }}
+          <li><a href="{{ .url }}" target="_blank" rel="noopener noreferrer">{{ .label }}</a></li>
+        {{ end }}
+      </ul>
+    </nav>
+  </div>
+</footer>

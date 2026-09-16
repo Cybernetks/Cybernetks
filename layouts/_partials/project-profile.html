@@ -1,0 +1,51 @@
+{{ $project := . }}
+{{ $screenshots := .Params.screenshots | default (slice) }}
+{{ $related := slice }}
+{{ $supportingPages := slice }}
+{{ range site.RegularPages }}
+  {{ if and (ne .RelPermalink $project.RelPermalink) (in (.Params.projects | default (slice)) $project.Title) }}{{ $related = $related | append . }}{{ end }}
+  {{ if and .Params.project (hasPrefix .RelPermalink $project.RelPermalink) }}{{ $supportingPages = $supportingPages | append . }}{{ end }}
+{{ end }}
+<article class="project" data-template="project">
+  <header class="project__header">
+    <div class="project__title-row">
+      {{ with .Params.icon }}
+        {{ $iconName := . }}
+        {{ with $project.Resources.GetMatch $iconName }}
+          <img class="project__icon" src="{{ .RelPermalink }}" width="{{ .Width }}" height="{{ .Height }}" alt="">
+        {{ else }}
+          <img class="project__icon" src="{{ $iconName }}" alt="">
+        {{ end }}
+      {{ end }}
+      <div><p class="project__eyebrow">{{ .Params.status }}</p><h1>{{ .Title }}</h1></div>
+    </div>
+    {{ with .Params.promise }}<p class="project__promise">{{ . }}</p>{{ end }}
+    {{ partial "project-action.html" (dict "page" .) }}
+  </header>
+
+  {{ with $screenshots }}
+    <section class="project__media" aria-label="Project media">
+      {{ range . }}{{ with $project.Resources.GetMatch . }}<figure><img src="{{ .RelPermalink }}" width="{{ .Width }}" height="{{ .Height }}" alt=""></figure>{{ end }}{{ end }}
+    </section>
+  {{ end }}
+
+  <div class="project__body">
+    {{ .Content }}
+    {{ with .Params.why }}<section><h2>Why it exists</h2><p>{{ . }}</p></section>{{ end }}
+    {{ with .Params.capabilities }}<section><h2>What it does</h2><ul>{{ range . }}<li>{{ . }}</li>{{ end }}</ul></section>{{ end }}
+    {{ if or .Params.project_kind .Params.platforms .Params.release_state .Params.next }}
+      <section class="project__facts" aria-labelledby="project-facts">
+        <h2 id="project-facts">Project details</h2>
+        <dl>
+          {{ with .Params.project_kind }}<div><dt>Kind</dt><dd>{{ . }}</dd></div>{{ end }}
+          {{ with .Params.platforms }}<div><dt>Platforms</dt><dd>{{ delimit . ", " }}</dd></div>{{ end }}
+          {{ with .Params.release_state }}<div><dt>Current release state</dt><dd>{{ . }}</dd></div>{{ end }}
+          {{ with .Params.next }}<div><dt>What comes next</dt><dd>{{ . }}</dd></div>{{ end }}
+        </dl>
+      </section>
+    {{ end }}
+  </div>
+
+  {{ with $related }}<section class="project__related" aria-labelledby="related-publications"><h2 id="related-publications">Related from the studio</h2><ul>{{ range .ByDate.Reverse }}<li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>{{ end }}</ul></section>{{ end }}
+  {{ with $supportingPages }}<nav class="project__supporting-pages" aria-label="{{ $project.Title }} information"><ul>{{ range .ByTitle }}<li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>{{ end }}</ul></nav>{{ end }}
+</article>

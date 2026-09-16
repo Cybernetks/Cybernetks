@@ -1,0 +1,27 @@
+{{ define "main" }}
+  {{ $snapshots := sort .Pages "Params.review_month" "desc" }}
+  {{ $years := slice }}
+  {{ range $snapshots }}
+    {{ with .Params.review_month }}
+      {{ $year := substr . 0 4 }}
+      {{ if not (in $years $year) }}{{ $years = $years | append $year }}{{ end }}
+    {{ end }}
+  {{ end }}
+  <section class="publication-archive publication-archive--snapshots" data-template="snapshots-archive">
+    <header>
+      <h1>{{ .Title }}</h1>
+      {{ with .Content }}{{ . }}{{ end }}
+    </header>
+    {{ range $year := $years }}
+      <section class="publication-archive__year" aria-labelledby="snapshots-{{ $year }}">
+        <h2 id="snapshots-{{ $year }}">{{ $year }}</h2>
+        <div class="publication-archive__list">
+          {{ range $snapshots }}
+            {{ $snapshot := . }}
+            {{ with $snapshot.Params.review_month }}{{ if hasPrefix . $year }}{{ template "snapshots/_views/card.html" $snapshot }}{{ end }}{{ end }}
+          {{ end }}
+        </div>
+      </section>
+    {{ end }}
+  </section>
+{{ end }}

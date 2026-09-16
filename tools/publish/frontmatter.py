@@ -1,6 +1,7 @@
 """Parse and validate the front matter boundary for public source notes."""
 
 from datetime import date, datetime
+import ipaddress
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlsplit
@@ -25,6 +26,10 @@ _KIND_REQUIRED_FIELDS = {
     ContentKind.PROJECT: ("status", "promise", "project_kind"),
 }
 _PROJECT_ONLY_FIELDS = frozenset(_KIND_REQUIRED_FIELDS[ContentKind.PROJECT])
+_ADAPTATION_URL_FIELDS = ("youtube_url", "podcast_url", "youtube", "podcast")
+_PROJECT_ACTION_EXTERNAL_URL_FIELDS = ("beta_url", "store_url", "app_url", "source_url", "project_url")
+_PROJECT_ACTION_FIELDS = frozenset(("latest_update", *_PROJECT_ACTION_EXTERNAL_URL_FIELDS))
+_PLACEHOLDER_HOSTS = {"example.com", "example.org", "example.net", "localhost"}
 
 
 class _DuplicateKeyError(yaml.YAMLError):
@@ -93,6 +98,9 @@ def parse_source(path: Path, kind: ContentKind) -> SourceDocument:
     content_kind = _validated_content_kind(kind, source_path)
     metadata, body = _read_front_matter(source_path)
     _reject_project_only_fields(metadata, content_kind, source_path)
+    _validate_adaptation_urls(metadata, source_path)
+    if content_kind == ContentKind.PROJECT:
+        _validate_project_action_urls(metadata, source_path)
     publication_status = _required_string(
         metadata, "publication_status", source_path
     )
@@ -167,9 +175,86 @@ def _reject_project_only_fields(
 ) -> None:
     if kind == ContentKind.PROJECT:
         return
-    for field in _PROJECT_ONLY_FIELDS:
+    for field in _PROJECT_ONLY_FIELDS | _PROJECT_ACTION_FIELDS:
         if field in metadata:
             _raise(path, field, "is only allowed for projects")
+
+
+def _validate_adaptation_urls(metadata: dict[str, Any], path: Path) -> None:
+    for field in _ADAPTATION_URL_FIELDS:
+        if field not in metadata:
+            continue
+        value = metadata[field]
+        if not isinstance(value, str) or not value or value != value.strip() or any(
+            character.isspace() for character in value
+        ) or "\\" in value:
+            _raise(path, field, "must be an absolute HTTPS URL")
+        try:
+            parsed = urlsplit(value)
+            port = parsed.port
+        except ValueError:
+            _raise(path, field, "must be an absolute HTTPS URL")
+        if (
+            parsed.scheme != "https"
+            or not parsed.netloc
+            or not parsed.hostname
+            or parsed.username
+            or parsed.password
+            or "@" in parsed.netloc
+            or (port is not None and not 1 <= port <= 65535)
+        ):
+            _raise(path, field, "must be an absolute HTTPS URL")
+
+
+def _validate_project_action_urls(metadata: dict[str, Any], path: Path) -> None:
+    """Validate optional lifecycle destinations before templates can render them."""
+    if "latest_update" in metadata:
+        value = metadata["latest_update"]
+        if not isinstance(value, str) or not value.strip():
+            _raise(path, "latest_update", "must be a site-relative Cybernetks URL")
+        parsed = urlsplit(value)
+        if parsed.scheme or parsed.netloc:
+            _raise(path, "latest_update", "must be a site-relative Cybernetks URL")
+        try:
+            metadata["latest_update"] = normalize_public_path(value)
+        except SourceValidationError:
+            _raise(path, "latest_update", "must be a site-relative Cybernetks URL")
+
+    for field in _PROJECT_ACTION_EXTERNAL_URL_FIELDS:
+        if field not in metadata:
+            continue
+        value = metadata[field]
+        if not isinstance(value, str) or not value or value != value.strip() or any(
+            character.isspace() for character in value
+        ) or "\\" in value:
+            _raise(path, field, "must be an absolute HTTPS URL to a non-placeholder host")
+        try:
+            parsed = urlsplit(value)
+            port = parsed.port
+        except ValueError:
+            _raise(path, field, "must be an absolute HTTPS URL to a non-placeholder host")
+        # DNS absolute names may carry a terminal dot; compare their canonical host form.
+        hostname = parsed.hostname.casefold().rstrip(".") if parsed.hostname else ""
+        if (
+            parsed.scheme != "https"
+            or not parsed.netloc
+            or not hostname
+            or parsed.username
+            or parsed.password
+            or "@" in parsed.netloc
+            or (port is not None and not 1 <= port <= 65535)
+            or _is_placeholder_host(hostname)
+        ):
+            _raise(path, field, "must be an absolute HTTPS URL to a non-placeholder host")
+
+
+def _is_placeholder_host(hostname: str) -> bool:
+    if hostname in _PLACEHOLDER_HOSTS or hostname.endswith(".invalid"):
+        return True
+    try:
+        return not ipaddress.ip_address(hostname).is_global
+    except ValueError:
+        return False
 
 
 def _required_string(metadata: dict[str, Any], field: str, path: Path) -> str:

@@ -1,0 +1,15 @@
+{{ $project := . }}
+<article class="project-card">
+  {{ with $project.Params.icon }}
+    {{ $iconName := . }}
+    {{ with $project.Resources.GetMatch $iconName }}
+      <img class="project-card__icon" src="{{ .RelPermalink }}" width="{{ .Width }}" height="{{ .Height }}" alt="">
+    {{ else }}
+      <img class="project-card__icon" src="{{ $iconName }}" alt="">
+    {{ end }}
+  {{ end }}
+  <p class="project-card__status">{{ $project.Params.status }}</p>
+  <h3><a href="{{ $project.RelPermalink }}">{{ $project.Title }}</a></h3>
+  {{ with $project.Params.promise }}<p>{{ . }}</p>{{ end }}
+  <p><a href="{{ $project.RelPermalink }}">View project</a></p>
+</article>

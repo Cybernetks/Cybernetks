@@ -80,7 +80,7 @@ class BundleRenderTest(unittest.TestCase):
             url_path="/about/",
         )
 
-        self.assertEqual(bundle_path(PROJECT).as_posix(), "projects/operator/index.md")
+        self.assertEqual(bundle_path(PROJECT).as_posix(), "projects/operator/_index.md")
         self.assertEqual(bundle_path(privacy).as_posix(), "projects/operator/privacy/index.md")
         self.assertEqual(bundle_path(about).as_posix(), "about/index.md")
 

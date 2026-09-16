@@ -1,3 +1,60 @@
 {{ define "main" }}
-  <h1>Cybernetks</h1>
+  {{ $operator := site.GetPage "/projects/operator/" }}
+  {{ $projectPaths := slice "/projects/operator/" "/projects/cybernetks-planner/" "/projects/alien-miner/" }}
+  {{ $logs := where site.RegularPages "Params.kind" "log" }}
+  {{ $snapshots := where site.RegularPages "Params.kind" "snapshot" }}
+  {{ $publications := where site.RegularPages "Params.kind" "in" (slice "log" "snapshot") }}
+  <section class="home-hero">
+    <p class="home-hero__eyebrow">Cybernetks</p>
+    <h1>A solo studio building thoughtful software in public.</h1>
+  </section>
+
+  <section class="home-section home-section--studio" aria-labelledby="inside-studio">
+    <h2 id="inside-studio">Inside the studio</h2>
+    <div class="home-studio-grid">
+      {{ with $operator }}
+        <div class="home-studio-grid__feature">
+          {{ template "projects/_views/card.html" . }}
+        </div>
+      {{ end }}
+      {{ range first 1 ($logs.ByDate.Reverse) }}
+        <article class="home-publication-card">
+          <p class="publication-card__meta">Latest Log</p>
+          <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+          {{ with .Description }}<p>{{ . }}</p>{{ end }}
+        </article>
+      {{ end }}
+      {{ range first 1 ($snapshots.ByDate.Reverse) }}
+        <article class="home-publication-card">
+          <p class="publication-card__meta">Latest Monthly Snapshot</p>
+          <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+          {{ with .Description }}<p>{{ . }}</p>{{ end }}
+        </article>
+      {{ end }}
+    </div>
+  </section>
+
+  <section class="home-section" aria-labelledby="projects-experiments">
+    <h2 id="projects-experiments">Projects and experiments</h2>
+    <div class="project-card-grid">
+      {{ range $projectPaths }}
+        {{ with site.GetPage . }}
+          {{ template "projects/_views/card.html" . }}
+        {{ end }}
+      {{ end }}
+    </div>
+  </section>
+
+  <section class="home-section" aria-labelledby="latest-studio">
+    <h2 id="latest-studio">Latest from the studio</h2>
+    <div class="home-publication-list">
+      {{ range first 6 ($publications.ByDate.Reverse) }}
+        <article class="home-publication-card">
+          <p class="publication-card__meta">{{ .Params.kind }}</p>
+          <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+          {{ with .Description }}<p>{{ . }}</p>{{ end }}
+        </article>
+      {{ end }}
+    </div>
+  </section>
 {{ end }}

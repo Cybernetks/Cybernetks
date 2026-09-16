@@ -29,6 +29,90 @@ class FrontMatterTest(unittest.TestCase):
         with self.assertRaises(SourceValidationError):
             normalize_public_path("https://example.com/post/")
 
+    def test_rejects_unsafe_log_adaptation_urls_with_their_source_field(self) -> None:
+        # Passing a malformed value through to a template can generate an unsafe external CTA.
+        for field in ("youtube_url", "podcast_url", "youtube", "podcast"):
+            for value in ("javascript:alert(1)", "https://@www.youtube.com/watch?v=scope-creep"):
+                with self.subTest(field=field, value=value), tempfile.TemporaryDirectory() as directory:
+                    path = Path(directory) / "unsafe-adaptation.md"
+                    path.write_text(
+                        "---\n"
+                        "title: Unsafe adaptation\n"
+                        "publication_status: published\n"
+                        "publish_date: 2026-09-15\n"
+                        "summary: This Log has an unsafe external destination.\n"
+                        "url: /unsafe-adaptation/\n"
+                        f"{field}: {value}\n"
+                        "---\n"
+                        "A public Log body.\n",
+                        encoding="utf-8",
+                    )
+
+                    with self.assertRaisesRegex(
+                        SourceValidationError,
+                        rf"^{path.as_posix()}: {field}: must be an absolute HTTPS URL$",
+                    ):
+                        parse_source(path, ContentKind.LOG)
+
+    def test_rejects_unsafe_project_action_destinations_with_their_source_field(self) -> None:
+        # Unvalidated lifecycle fields would become misleading or unsafe primary CTAs.
+        external_fields = ("beta_url", "store_url", "app_url", "source_url", "project_url")
+        for field in external_fields:
+            for value in (
+                "javascript:alert(1)",
+                "https://example.com/placeholder",
+                "https://localhost./",
+                "https://example.com./",
+            ):
+                with self.subTest(field=field, value=value), tempfile.TemporaryDirectory() as directory:
+                    path = Path(directory) / "unsafe-project-action.md"
+                    path.write_text(
+                        "---\n"
+                        "title: Unsafe project action\n"
+                        "publication_status: published\n"
+                        "publish_date: 2026-09-15\n"
+                        "summary: This project has an unsafe action destination.\n"
+                        "url: /unsafe-project-action/\n"
+                        "status: beta\n"
+                        "promise: A safe project action.\n"
+                        "project_kind: native_app\n"
+                        f"{field}: {value}\n"
+                        "---\n",
+                        encoding="utf-8",
+                    )
+
+                    with self.assertRaisesRegex(
+                        SourceValidationError,
+                        rf"^{path.as_posix()}: {field}: must be an absolute HTTPS URL to a non-placeholder host$",
+                    ):
+                        parse_source(path, ContentKind.PROJECT)
+
+    def test_rejects_unsafe_project_latest_update_with_its_source_field(self) -> None:
+        # A project update must remain an internal canonical route, not an executable or absolute URL.
+        for value in ("javascript:alert(1)", "https://cybernetks.be/a-log/"):
+            with self.subTest(value=value), tempfile.TemporaryDirectory() as directory:
+                path = Path(directory) / "unsafe-project-update.md"
+                path.write_text(
+                    "---\n"
+                    "title: Unsafe project update\n"
+                    "publication_status: published\n"
+                    "publish_date: 2026-09-15\n"
+                    "summary: This project has an unsafe update route.\n"
+                    "url: /unsafe-project-update/\n"
+                    "status: launching\n"
+                    "promise: A safe project update.\n"
+                    "project_kind: native_app\n"
+                    f"latest_update: {value}\n"
+                    "---\n",
+                    encoding="utf-8",
+                )
+
+                with self.assertRaisesRegex(
+                    SourceValidationError,
+                    rf"^{path.as_posix()}: latest_update: must be a site-relative Cybernetks URL$",
+                ):
+                    parse_source(path, ContentKind.PROJECT)
+
     def test_rejects_query_fragment_and_malformed_paths(self) -> None:
         for value in (
             "https://cybernetks.be/post/?source=feed",

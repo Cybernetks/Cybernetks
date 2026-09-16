@@ -1,0 +1,7 @@
+launching: {label: Read the latest update, field: latest_update}
+beta: {label: Join the beta, field: beta_url}
+released-native: {label: Download on the App Store, field: store_url}
+released-web: {label: Open the app, field: app_url}
+open-source: {label: View on GitHub, field: source_url}
+released-experiment: {label: View the project, field: project_url}
+archived: {label: '', field: ''}

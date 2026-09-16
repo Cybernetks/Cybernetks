@@ -1,1 +1,15 @@
-<header></header>
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="brand" href="{{ site.Home.RelPermalink }}">
+      <img class="brand__symbol" src="/brand/logo.svg" width="500" height="500" alt="Cybernetks">
+      <img class="brand__wordmark" src="/brand/wordmark-gold.svg" width="3000" height="268" alt="">
+    </a>
+    <nav class="primary-nav" aria-label="Primary navigation">
+      <ul>
+        {{ range site.Data.navigation.primary }}
+          <li><a href="{{ .url }}"{{ if eq $.RelPermalink .url }} aria-current="page"{{ end }}>{{ .label }}</a></li>
+        {{ end }}
+      </ul>
+    </nav>
+  </div>
+</header>

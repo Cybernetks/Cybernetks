@@ -1,0 +1,60 @@
+{{ define "main" }}
+  {{ $topics := .Params.topics | default (slice) }}
+  {{ $projects := .Params.projects | default (slice) }}
+  {{ $youtube := .Params.youtube_url | default .Params.youtube }}
+  {{ $podcast := .Params.podcast_url | default .Params.podcast }}
+  <article class="publication publication--log" data-template="log">
+    <header class="publication__header">
+      <p class="publication__type">Log</p>
+      <h1>{{ .Title }}</h1>
+      {{ with .Description }}<p class="publication__summary">{{ . }}</p>{{ end }}
+      <div class="publication-meta" aria-label="Log details">
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>
+        <span>{{ .ReadingTime }} min read</span>
+        {{ with $topics }}
+          <ul class="publication-meta__list" aria-label="Topics">
+            {{ range . }}<li>{{ . }}</li>{{ end }}
+          </ul>
+        {{ end }}
+      </div>
+    </header>
+
+    <div class="publication__body">
+      {{ .Content }}
+    </div>
+
+    {{ if or $projects $topics }}
+      <aside class="publication__relations" aria-label="Related work">
+        {{ with $projects }}
+          <section>
+            <h2>Related projects</h2>
+            <ul>{{ range . }}<li>{{ . }}</li>{{ end }}</ul>
+          </section>
+        {{ end }}
+        {{ with $topics }}
+          <section>
+            <h2>Topics</h2>
+            <ul>{{ range . }}<li>{{ . }}</li>{{ end }}</ul>
+          </section>
+        {{ end }}
+      </aside>
+    {{ end }}
+
+    {{ if or $youtube $podcast }}
+      <aside class="publication__adaptations" aria-label="Adaptations">
+        <h2>Adaptations</h2>
+        <ul>
+          {{ with $youtube }}<li><a href="{{ . | safeURL }}">Watch on YouTube</a></li>{{ end }}
+          {{ with $podcast }}<li><a href="{{ . | safeURL }}">Listen to the podcast</a></li>{{ end }}
+        </ul>
+      </aside>
+    {{ end }}
+
+    {{ if or .PrevInSection .NextInSection }}
+      <nav class="publication__pagination" aria-label="Log navigation">
+        {{ with .PrevInSection }}<a href="{{ .RelPermalink }}">Newer Log: {{ .Title }}</a>{{ end }}
+        {{ with .NextInSection }}<a href="{{ .RelPermalink }}">Older Log: {{ .Title }}</a>{{ end }}
+      </nav>
+    {{ end }}
+  </article>
+{{ end }}

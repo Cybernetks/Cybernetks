@@ -1,0 +1,22 @@
+{{ $page := .page }}
+{{ $actions := index site.Data "project-actions" }}
+{{ with $page.Params.status }}
+  {{ with index $actions . }}
+    {{ $label := .label }}
+    {{ $field := .field }}
+    {{ with index $page.Params $field }}
+      {{ if eq $field "latest_update" }}
+        {{ range where site.RegularPages "RelPermalink" . }}
+          {{ $publication := . }}
+          {{ $isRelated := false }}
+          {{ range .Params.projects | default (slice) }}
+            {{ if eq (lower .) (lower $page.Title) }}{{ $isRelated = true }}{{ end }}
+          {{ end }}
+          {{ if and $isRelated (in (slice "log" "snapshot") $publication.Params.kind) }}<a class="project-primary-action" href="{{ $publication.RelPermalink }}">{{ $label }}</a>{{ end }}
+        {{ end }}
+      {{ else }}
+        <a class="project-primary-action" href="{{ . }}"{{ if hasPrefix . "http" }} target="_blank" rel="noopener noreferrer"{{ end }}>{{ $label }}</a>
+      {{ end }}
+    {{ end }}
+  {{ end }}
+{{ end }}

@@ -1,1 +1,35 @@
+{{ $main := resources.Get "css/main.css" | minify | fingerprint }}
+{{ $syntax := resources.Get "css/syntax.css" | minify | fingerprint }}
+{{ $description := .Description | default site.Title }}
+{{ $image := .Params.image | default "/images/og-default.png" }}
+{{ $ogImage := $image }}
+{{ if not (or (hasPrefix $image "http://") (hasPrefix $image "https://")) }}
+  {{ $ogImage = $image | absURL }}
+{{ end }}
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} | {{ site.Title }}{{ end }}</title>
+<meta name="description" content="{{ $description }}">
 <link rel="canonical" href="{{ .Permalink }}">
+<link rel="stylesheet" href="{{ $main.RelPermalink }}" integrity="{{ $main.Data.Integrity }}">
+<link rel="stylesheet" href="{{ $syntax.RelPermalink }}" integrity="{{ $syntax.Data.Integrity }}">
+<meta property="og:site_name" content="{{ site.Title }}">
+<meta property="og:type" content="website">
+<meta property="og:title" content="{{ .Title }}">
+<meta property="og:description" content="{{ $description }}">
+<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:image" content="{{ $ogImage }}">
+{{ if not .Params.image }}
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+{{ end }}
+<meta property="og:image:alt" content="Cybernetks">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ .Title }}">
+<meta name="twitter:description" content="{{ $description }}">
+<meta name="twitter:image" content="{{ $ogImage }}">
+{{ if or .IsHome (eq .Section "logs") (eq .Section "snapshots") }}
+  {{ with .OutputFormats.Get "RSS" }}
+    <link rel="alternate" type="{{ .MediaType.Type }}" href="{{ .RelPermalink }}" title="{{ site.Title }} RSS">
+  {{ end }}
+{{ end }}

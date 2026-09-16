@@ -1,0 +1,20 @@
+primary:
+  - label: Projects
+    url: /projects/
+  - label: Logs
+    url: /logs/
+  - label: Monthly Snapshots
+    url: /snapshots/
+  - label: About
+    url: /about/
+footer:
+  - label: GitHub
+    url: https://github.com/Cybernetks
+  - label: YouTube
+    url: https://www.youtube.com/@Cybernetks
+  - label: Spotify
+    url: https://open.spotify.com/show/1yUXmMLARRlLCRrPnfio1r
+  - label: Twitch
+    url: https://www.twitch.tv/cybernetks
+  - label: Itch.io
+    url: https://cybernetks.itch.io

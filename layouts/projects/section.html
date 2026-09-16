@@ -1,0 +1,18 @@
+{{ define "main" }}
+  {{ if eq .Params.kind "project" }}
+    {{ partial "project-profile.html" . }}
+  {{ else }}
+    {{ $projects := where site.Pages "Params.kind" "project" }}
+    <section class="project-index" data-template="projects-index">
+      <header class="project-index__header">
+        <h1>{{ .Title }}</h1>
+        {{ .Content }}
+      </header>
+      <div class="project-card-grid">
+        {{ range $projects.ByTitle }}
+          {{ template "projects/_views/card.html" . }}
+        {{ end }}
+      </div>
+    </section>
+  {{ end }}
+{{ end }}

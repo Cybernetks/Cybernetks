@@ -1,0 +1,40 @@
+{{ define "main" }}
+  {{ $reviewMonth := .Params.review_month | default "" }}
+  {{ $oneSentence := .Params.one_sentence }}
+  {{ $sections := .Params.sections | default (slice) }}
+  <article class="publication publication--snapshot" data-template="snapshot">
+    <header class="publication__header">
+      <p class="publication__type">Monthly Snapshot</p>
+      {{ with $reviewMonth }}<p class="snapshot__month">{{ time.AsTime (printf "%s-01" .) | time.Format "January 2006" }}</p>{{ end }}
+      <h1>{{ .Title }}</h1>
+      {{ with .Description }}<p class="publication__summary">{{ . }}</p>{{ end }}
+      {{ with .Date }}<div class="publication-meta" aria-label="Publication details"><time datetime="{{ .Format "2006-01-02" }}">Published {{ .Format "2 January 2006" }}</time></div>{{ end }}
+    </header>
+
+    {{ if $oneSentence }}
+      <section class="snapshot-grid" data-snapshot-section="00" aria-labelledby="snapshot-section-00">
+        <p class="snapshot-grid__label">00 · In one sentence</p>
+        <div class="snapshot-grid__content">
+          <h2 id="snapshot-section-00">In one sentence</h2>
+          {{ $oneSentence | markdownify }}
+        </div>
+      </section>
+    {{ end }}
+    {{ range $sections }}
+      <section class="snapshot-grid" data-snapshot-section="{{ .number }}" aria-labelledby="snapshot-section-{{ .number }}">
+        <p class="snapshot-grid__label">{{ .number }} · {{ .title }}</p>
+        <div class="snapshot-grid__content">
+          <h2 id="snapshot-section-{{ .number }}">{{ .title }}</h2>
+          {{ .body | markdownify }}
+        </div>
+      </section>
+    {{ end }}
+    {{ if not (or $oneSentence $sections) }}
+      <section class="snapshot-grid snapshot-grid--freeform">
+        <div class="snapshot-grid__content">
+          {{ .Content }}
+        </div>
+      </section>
+    {{ end }}
+  </article>
+{{ end }}

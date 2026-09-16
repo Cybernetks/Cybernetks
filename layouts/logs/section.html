@@ -1,0 +1,16 @@
+{{ define "main" }}
+  <section class="publication-archive publication-archive--logs" data-template="logs-archive">
+    <header>
+      <h1>{{ .Title }}</h1>
+      {{ with .Content }}{{ . }}{{ end }}
+    </header>
+    {{ range .Pages.ByDate.Reverse.GroupByDate "2006" }}
+      <section class="publication-archive__year" aria-labelledby="logs-{{ .Key }}">
+        <h2 id="logs-{{ .Key }}">{{ .Key }}</h2>
+        <div class="publication-archive__list">
+          {{ range .Pages }}{{ template "logs/_views/card.html" . }}{{ end }}
+        </div>
+      </section>
+    {{ end }}
+  </section>
+{{ end }}

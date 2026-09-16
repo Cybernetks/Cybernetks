@@ -1,0 +1,20 @@
+{{ $alt := .Text | plainify }}
+{{ $resource := .Page.Resources.GetMatch .Destination }}
+<figure>
+  {{ with $resource }}
+    {{ if eq .MediaType.SubType "svg" }}
+      <img src="{{ .RelPermalink }}" alt="{{ $alt }}" loading="lazy" decoding="async">
+    {{ else }}
+      {{ $image := . }}
+      {{ $sources := slice }}
+      {{ range $width := slice 480 960 1200 }}
+        {{ if lt $width $image.Width }}{{ $sources = $sources | append ($image.Resize (printf "%dx webp q82" $width)) }}{{ end }}
+      {{ end }}
+      {{ $sources = $sources | append ($image.Resize (printf "%dx webp q82" $image.Width)) }}
+      <img src="{{ .RelPermalink }}" srcset="{{ range $index, $source := $sources }}{{ if $index }}, {{ end }}{{ $source.RelPermalink }} {{ $source.Width }}w{{ end }}" sizes="(max-width: 760px) 100vw, 68ch" width="{{ .Width }}" height="{{ .Height }}" alt="{{ $alt }}" loading="lazy" decoding="async">
+    {{ end }}
+  {{ else }}
+    <img src="{{ .Destination | safeURL }}" alt="{{ $alt }}" loading="lazy" decoding="async">
+  {{ end }}
+  {{ with .Title }}<figcaption>{{ . }}</figcaption>{{ end }}
+</figure>
