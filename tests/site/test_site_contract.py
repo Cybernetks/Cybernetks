@@ -254,3 +254,20 @@ class GenericPageTest(unittest.TestCase):
             projects = home[home.index("Projects and experiments") : home.index("Latest from the studio")]
             self.assertLess(projects.index("Operator"), projects.index("Cybernetks Planner"))
             self.assertLess(projects.index("Cybernetks Planner"), projects.index("Alien Miner"))
+
+
+class DeploymentContractTest(unittest.TestCase):
+    def test_pages_workflow_builds_before_deploying(self) -> None:
+        workflow = (ROOT / ".github/workflows/pages.yaml").read_text(encoding="utf-8")
+        self.assertIn("./scripts/check-site", workflow)
+        self.assertIn("actions/deploy-pages@v5", workflow)
+        self.assertIn("needs: build", workflow)
+
+    def test_cutover_selects_github_actions_before_preview(self) -> None:
+        cutover = (ROOT / "docs/operations/cutover.md").read_text(encoding="utf-8")
+        source = "Settings → Pages → Build and deployment"
+        preview = "GitHub Pages deployment preview works"
+
+        self.assertIn(source, cutover)
+        self.assertIn("**GitHub Actions**", cutover)
+        self.assertLess(cutover.index(source), cutover.index(preview))

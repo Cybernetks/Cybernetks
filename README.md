@@ -21,7 +21,10 @@ make publish
 ```
 
 See [Publishing from Obsidian](docs/editorial-publishing.md) for source metadata,
-public article boundaries, and migration guidance.
+public article boundaries, and migration guidance. Day-to-day release instructions
+are in [Publishing](docs/operations/publishing.md); use the human-only
+[GitHub Pages cutover checklist](docs/operations/cutover.md) when moving the live
+domain from Ghost.
 
 One-person dev studio. <br />
 Freelance projects by day, indie games by night. <br />
