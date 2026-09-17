@@ -11,9 +11,6 @@ projects: []
 aliases: []
 params:
   kind: log
-  type:
-  - '[[Studio Notes]]'
-  - '[[Mindset]]'
 ---
 
 I know it has been a while. The last log was about releasing the planner, and since then I have been working on a digital version: an iOS app.

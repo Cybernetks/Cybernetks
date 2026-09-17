@@ -12,10 +12,6 @@ projects:
 aliases: []
 params:
   kind: log
-  type:
-  - '[[Project - Alien Miner]]'
-  - '[[Build Log]]'
-  - '[[Launches]]'
 ---
 
 The last two days were focused on finishing touches and getting **Alien Miner** out the door. It’s officially exported, uploaded, and submitted to the jam!

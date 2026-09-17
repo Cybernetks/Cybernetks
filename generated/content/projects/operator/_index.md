@@ -9,11 +9,7 @@ projects: []
 aliases: []
 params:
   kind: project
-  category:
-  - iOS application
-  created: 2026-07-01
   latest_update: /monthly-snapshot-august-2026/
-  launched: null
   platforms:
   - iOS
   project_kind: native_app
@@ -30,7 +26,7 @@ Operator has not yet been publicly released. There is no public download availab
 
 Read the [August studio update](/monthly-snapshot-august-2026/) for the current release context.
 
-### Help and privacy
+## Help and privacy
 
 - [Operator Support](/projects/operator/support/)
 - [Operator Privacy Policy](/projects/operator/privacy/)

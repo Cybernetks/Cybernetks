@@ -13,11 +13,6 @@ projects:
 aliases: []
 params:
   kind: log
-  type:
-  - '[[Project - Alien Miner]]'
-  - '[[Build Log]]'
-  - '[[Launches]]'
-  - '[[Studio Notes]]'
 ---
 
 My first ever game jam: **7 days, 1 theme: Risk it for the Biscuit**. Here’s how *Alien Miner* came to life.

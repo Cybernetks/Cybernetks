@@ -11,9 +11,6 @@ projects: []
 aliases: []
 params:
   kind: log
-  type:
-  - '[[Build Log]]'
-  - '[[Dev Notes]]'
 ---
 
 This week I wrapped up Brackeys’ [*How to program in Godot - GDScript tutorial*](https://www.youtube.com/watch?v=e1zJS31tr88), a one-hour overview that breaks down how Godot’s scripting language works under the hood. It’s not a full tutorial in the “build a game” sense, but it was a perfect starting point for me to get comfortable with the syntax and workflow.

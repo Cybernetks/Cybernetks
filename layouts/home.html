@@ -14,7 +14,7 @@
     <div class="home-studio-grid">
       {{ with $operator }}
         <div class="home-studio-grid__feature">
-          {{ template "projects/_views/card.html" . }}
+          {{ template "projects/_views/card.html" (dict "page" . "heading" 3) }}
         </div>
       {{ end }}
       {{ range first 1 ($logs.ByDate.Reverse) }}
@@ -39,7 +39,7 @@
     <div class="project-card-grid">
       {{ range $projectPaths }}
         {{ with site.GetPage . }}
-          {{ template "projects/_views/card.html" . }}
+          {{ template "projects/_views/card.html" (dict "page" . "heading" 3) }}
         {{ end }}
       {{ end }}
     </div>

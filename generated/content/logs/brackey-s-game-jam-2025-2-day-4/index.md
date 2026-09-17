@@ -11,9 +11,6 @@ projects:
 aliases: []
 params:
   kind: log
-  type:
-  - '[[Project - Alien Miner]]'
-  - '[[Build Log]]'
 ---
 
 Day 4 brought a big breakthrough: the game finally has a *point*. Until now, you could collect gems, bank them, and even die but there wasn’t a real **goal**. That changed with the introduction of **end gates**.

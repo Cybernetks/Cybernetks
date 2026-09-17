@@ -12,10 +12,6 @@ projects: []
 aliases: []
 params:
   kind: log
-  type:
-  - '[[Build Log]]'
-  - '[[Studio Notes]]'
-  - '[[Mindset]]'
 ---
 
 Lately, most of my time has gone into work for clients, the house, and helping my wife with her businesses. Real life, in other words.

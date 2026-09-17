@@ -177,8 +177,10 @@ pre { overflow-x: auto; padding: 1rem; background: var(--color-slate); border: 1
 .home-studio-grid__feature { grid-row: span 2; }
 .project-card,
 .home-publication-card { min-width: 0; padding: 1.4rem; border: 1px solid var(--color-slate-light); background: var(--color-slate); }
+.project-card h2,
 .project-card h3,
 .home-publication-card h3 { margin: 0.2rem 0 0.65rem; overflow-wrap: anywhere; }
+.project-card h2 { font-size: clamp(1.25rem, 3vw, 1.7rem); }
 .project-card p:last-child,
 .home-publication-card p:last-child { margin-bottom: 0; }
 .project-card__icon { width: 3rem; height: 3rem; margin-bottom: 1rem; border-radius: 0.75rem; object-fit: cover; }

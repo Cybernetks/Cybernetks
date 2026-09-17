@@ -140,7 +140,12 @@ class PublicationTemplateTest(unittest.TestCase):
 
     def test_freeform_snapshot_keeps_its_authored_body_without_invented_sections(self) -> None:
         # Labeling an older freeform Snapshot as section 00 would fabricate structure the source lacks.
-        html = (build_site() / "snapshots/september-2026/index.html").read_text(encoding="utf-8")
+        with tempfile.TemporaryDirectory() as directory:
+            repository = Path(directory)
+            publish(ROOT / "tests/fixtures/vault", repository)
+            public = build_site(repository / "generated/content")
+            self.addCleanup(shutil.rmtree, public)
+            html = (public / "snapshots/september-2026/index.html").read_text(encoding="utf-8")
 
         self.assertIn('class="snapshot-grid snapshot-grid--freeform"', html)
         self.assertIn("The month in one sentence.", html)
@@ -163,6 +168,14 @@ class PublicationTemplateTest(unittest.TestCase):
 
 
 class ProjectTemplateTest(unittest.TestCase):
+    def test_project_cards_follow_their_containing_heading_level(self) -> None:
+        # Reusing homepage h3 cards directly below the index h1 skips a heading level.
+        index = built_html("projects/index.html")
+        home = built_html("index.html")
+
+        self.assertIn('<h2><a href="/projects/operator/">Operator</a></h2>', index)
+        self.assertIn('<h3><a href="/projects/operator/">Operator</a></h3>', home)
+
     def test_launching_project_links_to_latest_update(self) -> None:
         # Removing the lifecycle action would leave a work-in-progress project with no real next step.
         html = built_html("projects/operator/index.html")

@@ -11,9 +11,6 @@ projects:
 aliases: []
 params:
   kind: log
-  type:
-  - '[[Project - Alien Miner]]'
-  - '[[Build Log]]'
 ---
 
 The theme for this jam is **“Risk it for the biscuit.”** At first, I struggled to connect it to a platformer, card games and gambling mechanics felt obvious, but I wanted to keep it closer to what I’ve been learning.

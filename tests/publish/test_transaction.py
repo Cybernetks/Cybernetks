@@ -17,6 +17,37 @@ def valid_vault(destination: Path) -> Path:
 
 
 class PublishTransactionTest(unittest.TestCase):
+    def test_editorial_metadata_never_reaches_generated_public_files(self) -> None:
+        # Passing arbitrary source properties into params publishes private vault metadata.
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            repository = root / "repository"
+            repository.mkdir()
+            vault = valid_vault(root / "vault")
+            note = vault / "3. Businesses/Cybernetks/Logs/New Log.md"
+            note.write_text(
+                note.read_text(encoding="utf-8").replace(
+                    "publication_status: published",
+                    "publication_status: published\n"
+                    "editorial_notes: PRIVATE-EDITORIAL-SENTINEL\n"
+                    "type: ['[[PRIVATE-VAULT-RELATION]]']\n"
+                    "params: {secret: PRIVATE-NESTED-SENTINEL}\n"
+                    "youtube_url: https://www.youtube.com/watch?v=public-video",
+                ),
+                encoding="utf-8",
+            )
+
+            publish(vault, repository)
+
+            rendered = repository / "generated/content/logs/new-log/index.md"
+            text = rendered.read_text(encoding="utf-8")
+            self.assertNotIn("PRIVATE-", text)
+            metadata = yaml.safe_load(text.split("---", 2)[1])
+            self.assertEqual(
+                metadata["params"]["youtube_url"],
+                "https://www.youtube.com/watch?v=public-video",
+            )
+
     def test_shared_fixture_publishes_without_test_only_edits(self) -> None:
         # The wrapper's fixture must be a complete valid vault, not a test-repaired copy.
         with tempfile.TemporaryDirectory() as directory:

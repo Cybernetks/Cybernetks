@@ -39,6 +39,30 @@ class BodyExtractionTest(unittest.TestCase):
             extract_public_body(markdown, ContentKind.PROJECT, SOURCE_PATH), "Public"
         )
 
+    def test_website_content_promotes_nested_headings_after_removing_its_marker(self) -> None:
+        # Removing the Website Content h2 otherwise leaves an h1-to-h3 skip on the page.
+        for kind in (ContentKind.PROJECT, ContentKind.PAGE):
+            with self.subTest(kind=kind):
+                self.assertEqual(
+                    extract_public_body(
+                        "# Title\n## Website Content\nPublic intro\n"
+                        "### Help\n#### Details\n```markdown\n### Literal example\n```",
+                        kind,
+                        SOURCE_PATH,
+                    ),
+                    "Public intro\n## Help\n### Details\n```markdown\n### Literal example\n```",
+                )
+
+    def test_website_content_preserves_already_correct_heading_levels(self) -> None:
+        self.assertEqual(
+            extract_public_body(
+                "# Title\n## Website Content\n## Help\n### Details",
+                ContentKind.PAGE,
+                SOURCE_PATH,
+            ),
+            "## Help\n### Details",
+        )
+
     def test_blog_post_marker_takes_precedence_over_other_markers(self) -> None:
         markdown = (
             "# Title\n"

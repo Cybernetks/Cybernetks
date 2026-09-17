@@ -11,9 +11,6 @@ projects:
 aliases: []
 params:
   kind: log
-  type:
-  - '[[Project - Alien Miner]]'
-  - '[[Build Log]]'
 ---
 
 Progress was a little slower today (kids don’t always sync with jam schedules 😅), but I still managed to add some important pieces that bring the game closer to feeling like an actual *game*.

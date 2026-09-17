@@ -11,7 +11,6 @@ projects:
 aliases: []
 params:
   kind: snapshot
-  generated: 2026-09-02
   one_sentence: In August, I moved Operator from feature completion into commercial,
     App Store, and legal preparation. I did not manage to release it as intended because
     the final release pipeline remains incomplete.
@@ -79,8 +78,6 @@ params:
       - **First concrete step:** Complete the CloudKit container registration, production
       schema work, and two-device synchronization check in the signed Apple Developer
       environment.'
-  type:
-  - '[[Studio Notes]]'
 ---
 
 This month's update looks a little different. For August, I'm trying a more reflective style that goes beyond counting output and focuses on what actually moved, what I learned, and what comes next.

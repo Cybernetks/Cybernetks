@@ -11,9 +11,6 @@ projects:
 aliases: []
 params:
   kind: log
-  type:
-  - '[[Project - Alien Miner]]'
-  - '[[Build Log]]'
 ---
 
 Today felt like a turning point. Instead of following tutorials step by step, I started leaning on the docs and experimenting more with Godot directly. That shift made things click faster, I’m building *my game*, not just replaying Brackeys.

@@ -12,10 +12,6 @@ projects: []
 aliases: []
 params:
   kind: log
-  type:
-  - '[[Studio Notes]]'
-  - '[[Build Log]]'
-  - '[[Mindset]]'
 ---
 
 > *Cybernetks was never just about games. It just took me a while to realise it.*

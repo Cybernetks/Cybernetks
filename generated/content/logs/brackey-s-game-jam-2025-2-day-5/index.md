@@ -11,9 +11,6 @@ projects:
 aliases: []
 params:
   kind: log
-  type:
-  - '[[Project - Alien Miner]]'
-  - '[[Build Log]]'
 ---
 
 Today was all about level design. I cleared out the messy test setups and finally put together the first proper level. That means the game now has a structure instead of just isolated mechanics.

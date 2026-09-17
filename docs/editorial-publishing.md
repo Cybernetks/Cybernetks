@@ -12,6 +12,16 @@ Published notes need `title`, `publish_date`, `summary`, and `url`. Keep existin
 URLs stable even when a title changes. Snapshots also need `review_month: YYYY-MM`.
 Project notes need `status`, `promise`, and `project_kind`.
 
+The publisher exports only supported public metadata. Common optional fields are
+`topics`, `projects`, `aliases`, and `image`. Logs may also use `youtube_url`,
+`podcast_url`, `youtube`, and `podcast`; Snapshots use `review_month` and derive their
+structured sections from the public body. Projects may use `icon`, `screenshots`,
+`why`, `capabilities`, `platforms`, `release_state`, `next`, `latest_update`,
+`beta_url`, `store_url`, `app_url`, `source_url`, and `project_url`. Supporting pages
+may use `project`. Other note properties are ignored, including vault classifications,
+internal dates, nested `params`, and editorial notes. Keep only public values in
+these supported fields; add new supported fields deliberately in the publisher.
+
 ## Log article boundaries
 
 Use `# Blog post` immediately before the website article. It ends at the next
@@ -39,6 +49,9 @@ The legacy `## Published Content` marker consumes the rest of a note; do not put
 private editorial material after it without an explicit `# Blog post` boundary.
 For supporting pages and projects, `## Website Content` consumes the rest of the
 note. Keep private roadmap, pricing, and planning material before that marker.
+When all headings inside `Website Content` are nested below level two, publication
+promotes them together so the first level is `##`, preserving their relative
+hierarchy and leaving fenced code examples unchanged.
 
 ## Links and images
 

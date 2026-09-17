@@ -11,9 +11,6 @@ projects: []
 aliases: []
 params:
   kind: log
-  type:
-  - '[[Mindset]]'
-  - '[[Studio Notes]]'
 ---
 
 Lately I’ve been experimenting with a simple productivity system to stay focused while working on Cybernetks projects: the **Pomodoro Technique**.

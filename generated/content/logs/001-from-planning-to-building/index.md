@@ -10,7 +10,6 @@ projects: []
 aliases: []
 params:
   kind: log
-  type: '[[Studio Notes]]'
 ---
 
 [Embedded media](https://open.spotify.com/embed/episode/74YuI8ZMxnB1JSFKTGV40D?si=QcLyEWkkSo-hvTENwaBIdQ&utm_source=oembed)

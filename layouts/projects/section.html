@@ -10,7 +10,7 @@
       </header>
       <div class="project-card-grid">
         {{ range $projects.ByTitle }}
-          {{ template "projects/_views/card.html" . }}
+          {{ template "projects/_views/card.html" (dict "page" . "heading" 2) }}
         {{ end }}
       </div>
     </section>

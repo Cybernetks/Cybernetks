@@ -11,8 +11,6 @@ aliases: []
 params:
   kind: snapshot
   review_month: 2026-07
-  type:
-  - '[[Studio Notes]]'
 ---
 
 This monthly snapshot documents output, visibility, and finances as I build Cybernetks in public, with a focus on long-term sustainability and learning.

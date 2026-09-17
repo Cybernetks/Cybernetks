@@ -9,6 +9,7 @@ from tools.publish.models import ContentKind, SourceValidationError
 
 _LEVEL_ONE_HEADING = re.compile(r"^#\s+(.+?)(?:\s+#+)?\s*$")
 _LEVEL_TWO_HEADING = re.compile(r"^##\s+(.+?)(?:\s+#+)?\s*$")
+_HEADING_LEVEL = re.compile(r"^(#{1,6})\s+")
 _FENCE = re.compile(r"^\s{0,3}(?:`{3,}|~{3,})")
 
 
@@ -42,6 +43,11 @@ def extract_public_body(markdown: str, kind: ContentKind, source_path: Path) -> 
                 "Website Content is only allowed for project and page notes",
             )
         body = website_body
+        if body is not None:
+            headings = _headings(body, _HEADING_LEVEL)
+            shift = max(0, min((len(level) for _, level in headings), default=2) - 2)
+            for index, _ in headings:
+                body[index] = body[index][shift:]
     if body is None:
         body = _after_first_level_one_heading(lines)
 

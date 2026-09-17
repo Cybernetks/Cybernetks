@@ -11,9 +11,6 @@ projects: []
 aliases: []
 params:
   kind: log
-  type:
-  - '[[Build Log]]'
-  - '[[Studio Notes]]'
 ---
 
 I wrapped up Brackeys [*Godot Beginner tutorial*](https://www.youtube.com/watch?v=LOhfqjmasi0), a great starting point for anyone new to Godot. The best part for starting developers: it requires little to no prior programming knowledge.

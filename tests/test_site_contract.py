@@ -1,3 +1,7 @@
-from tests.site.test_site_contract import HugoPreflightTest, HugoSmokeTest
+"""Discover site suites without colliding with Python's built-in site module."""
 
-__all__ = ["HugoPreflightTest", "HugoSmokeTest"]
+
+def load_tests(loader, tests, pattern):
+    return loader.loadTestsFromNames(
+        ["tests.site.test_site_contract", "tests.site.test_legacy_routes"]
+    )

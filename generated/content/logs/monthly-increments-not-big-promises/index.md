@@ -9,7 +9,6 @@ projects: []
 aliases: []
 params:
   kind: log
-  type: null
 ---
 
 ▶️

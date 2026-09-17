@@ -11,9 +11,6 @@ projects: []
 aliases: []
 params:
   kind: log
-  type:
-  - '[[Mindset]]'
-  - '[[Studio Notes]]'
 ---
 
 It’s been almost a month since my last update and I wish I could say I’ve been deep in game dev or shipping experiments. Truth is, I’ve been **stuck in consumer mode**.

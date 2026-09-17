@@ -11,9 +11,6 @@ projects: []
 aliases: []
 params:
   kind: log
-  type:
-  - '[[Mindset]]'
-  - '[[Studio Notes]]'
 ---
 
 When I sit down to work, either on my game or a new client feature, I don’t always arrive with a clear head. Some days I’m thinking about the kids, finances, architectural decisions, or the (unfinished) feature I was working on yesterday.

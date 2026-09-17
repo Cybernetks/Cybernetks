@@ -11,9 +11,6 @@ projects: []
 aliases: []
 params:
   kind: log
-  type:
-  - '[[Build Log]]'
-  - '[[Mindset]]'
 ---
 
 It took a lot longer than I thought, but I’m finally here—with a clear mind, a focused brand, and both hands back on the keyboard.

@@ -11,9 +11,6 @@ projects: []
 aliases: []
 params:
   kind: log
-  type:
-  - '[[Build Log]]'
-  - '[[Mindset]]'
 ---
 
 Starting the game development journey for the studio feels straightforward. I pick an engine, follow a few tutorials, then begin prototyping. Simple steps into a new space.

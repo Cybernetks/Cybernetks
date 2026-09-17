@@ -11,9 +11,6 @@ projects: []
 aliases: []
 params:
   kind: log
-  type:
-  - '[[Studio Notes]]'
-  - '[[Mindset]]'
 ---
 
 I've been working as a freelance consultant for over ten years, mostly on larger web development projects that I could really sink my teeth into.

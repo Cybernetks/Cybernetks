@@ -14,13 +14,6 @@ from tools.publish.models import ContentKind, SourceDocument, SourceValidationEr
 
 _PUBLICATION_STATUSES = {"draft", "published"}
 _CANONICAL_HOSTS = {"cybernetks.be", "www.cybernetks.be"}
-_SHARED_FIELDS = {
-    "title",
-    "publication_status",
-    "publish_date",
-    "summary",
-    "url",
-}
 _KIND_REQUIRED_FIELDS = {
     ContentKind.SNAPSHOT: ("review_month",),
     ContentKind.PROJECT: ("status", "promise", "project_kind"),
@@ -29,6 +22,15 @@ _PROJECT_ONLY_FIELDS = frozenset(_KIND_REQUIRED_FIELDS[ContentKind.PROJECT])
 _ADAPTATION_URL_FIELDS = ("youtube_url", "podcast_url", "youtube", "podcast")
 _PROJECT_ACTION_EXTERNAL_URL_FIELDS = ("beta_url", "store_url", "app_url", "source_url", "project_url")
 _PROJECT_ACTION_FIELDS = frozenset(("latest_update", *_PROJECT_ACTION_EXTERNAL_URL_FIELDS))
+_PUBLIC_COMMON_PARAMS = frozenset(("topics", "projects", "aliases", "image"))
+_PUBLIC_KIND_PARAMS = {
+    ContentKind.LOG: frozenset(_ADAPTATION_URL_FIELDS),
+    ContentKind.SNAPSHOT: frozenset(("review_month",)),
+    ContentKind.PROJECT: _PROJECT_ONLY_FIELDS | _PROJECT_ACTION_FIELDS | frozenset(
+        ("icon", "screenshots", "why", "capabilities", "platforms", "release_state", "next")
+    ),
+    ContentKind.PAGE: frozenset(("project",)),
+}
 _PLACEHOLDER_HOSTS = {"example.com", "example.org", "example.net", "localhost"}
 
 
@@ -125,7 +127,10 @@ def parse_source(path: Path, kind: ContentKind) -> SourceDocument:
     for field in _KIND_REQUIRED_FIELDS.get(content_kind, ()):
         _required_string(metadata, field, source_path)
 
-    params = {key: value for key, value in metadata.items() if key not in _SHARED_FIELDS}
+    # Notes mix public content with vault-only editorial and project properties.
+    # Only explicitly supported public fields may cross into committed output.
+    public_fields = _PUBLIC_COMMON_PARAMS | _PUBLIC_KIND_PARAMS[content_kind]
+    params = {key: value for key, value in metadata.items() if key in public_fields}
     return SourceDocument(
         source_path=source_path,
         kind=content_kind,

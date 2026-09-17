@@ -10,8 +10,6 @@ projects: []
 aliases: []
 params:
   kind: log
-  type:
-  - '[[Studio Notes]]'
 ---
 
 I've had the idea for a studio floating in my head for a while now. I started the branding process, second-guessed it, polished it a bit more, and pushed it aside more times than I can count.

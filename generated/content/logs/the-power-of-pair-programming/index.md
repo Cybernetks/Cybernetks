@@ -12,9 +12,6 @@ projects: []
 aliases: []
 params:
   kind: log
-  type:
-  - '[[Mindset]]'
-  - '[[Build Log]]'
 ---
 
 I recently did a pair programming session on a ticket that involved React development—definitely not my strongest suit at the moment. But the developer I was pairing with had more experience with React.

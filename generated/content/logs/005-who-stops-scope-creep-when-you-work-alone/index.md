@@ -11,9 +11,6 @@ projects: []
 aliases: []
 params:
   kind: log
-  type:
-  - '[[Studio Notes]]'
-  - '[[Mindset]]'
 ---
 
 Scope creep. As developers, we do not like hearing those words.
