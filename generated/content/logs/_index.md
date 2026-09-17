@@ -1,5 +1,6 @@
 ---
 title: Logs
 url: /logs/
-aliases: []
+aliases:
+- /topics/
 ---

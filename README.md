@@ -20,6 +20,9 @@ make preview
 make publish
 ```
 
+See [Publishing from Obsidian](docs/editorial-publishing.md) for source metadata,
+public article boundaries, and migration guidance.
+
 One-person dev studio. <br />
 Freelance projects by day, indie games by night. <br />
 Code, creativity & behind-the-scenes.
