@@ -1,11 +1,14 @@
 PYTHON ?= python3
 
-.PHONY: test build preview publish hugo-preflight
+.PHONY: test check build preview publish hugo-preflight
 hugo-preflight:
 	./scripts/check-hugo
 
 test: hugo-preflight
 	$(PYTHON) -m unittest discover -s tests -p 'test_*.py' -v
+
+check:
+	./scripts/check-site
 
 build: hugo-preflight
 	hugo --gc --minify --cleanDestinationDir

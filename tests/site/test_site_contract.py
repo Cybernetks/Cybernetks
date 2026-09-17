@@ -1,15 +1,26 @@
 from pathlib import Path
 import os
+import shutil
 import subprocess
 import tempfile
 import unittest
 from unittest.mock import patch
 
 from tests.site.build import ROOT, build_site, built_html
+from tests.site.html_contract import check_public_tree
 from tools.publish.transaction import publish
 
 
 class HugoSmokeTest(unittest.TestCase):
+    def test_built_public_tree_satisfies_the_deployment_contract(self) -> None:
+        # A successful Hugo render can still contain a broken emitted reference or route.
+        public = build_site()
+        self.addCleanup(shutil.rmtree, public)
+
+        self.assertEqual(
+            check_public_tree(public, ROOT / "data/migration/ghost.yaml"), []
+        )
+
     def test_homepage_builds_with_canonical_origin(self) -> None:
         public = build_site()
         html = (public / "index.html").read_text(encoding="utf-8")
