@@ -237,6 +237,61 @@ class HomepageTest(unittest.TestCase):
 
 
 class GenericPageTest(unittest.TestCase):
+    def test_about_has_a_distinct_studio_layout_with_project_and_publication_paths(self) -> None:
+        public = build_site()
+        self.addCleanup(shutil.rmtree, public)
+        about = (public / "about/index.html").read_text(encoding="utf-8")
+        uses = (public / "uses/index.html").read_text(encoding="utf-8")
+
+        self.assertIn('data-template="about"', about)
+        self.assertIn('class="main--wide"', about)
+        self.assertIn('aria-label="Cybernetks symbol"', about)
+        for route in (
+            "/projects/operator/",
+            "/projects/cybernetks-planner/",
+            "/projects/alien-miner/",
+            "/logs/",
+            "/snapshots/",
+        ):
+            self.assertIn(f'href="{route}"', about)
+        self.assertIn('data-template="page"', uses)
+        self.assertNotIn('data-template="about"', uses)
+
+    def test_studio_support_is_its_own_page(self) -> None:
+        public = build_site()
+        self.addCleanup(shutil.rmtree, public)
+        html = (public / "support/index.html").read_text(encoding="utf-8")
+
+        self.assertIn('rel="canonical" href="https://cybernetks.be/support/"', html)
+        self.assertIn("Support Cybernetks", html)
+        self.assertIn("https://buymeacoffee.com/cybernetks?ref=cybernetks.be", html)
+        self.assertNotIn('http-equiv="refresh"', html)
+
+    def test_studio_support_has_one_clear_action_and_separate_app_help(self) -> None:
+        public = build_site()
+        self.addCleanup(shutil.rmtree, public)
+        support = (public / "support/index.html").read_text(encoding="utf-8")
+        operator = (public / "projects/operator/support/index.html").read_text(encoding="utf-8")
+
+        self.assertIn('data-template="support"', support)
+        self.assertIn('class="support__panel"', support)
+        self.assertEqual(support.count('href="https://buymeacoffee.com/cybernetks?ref=cybernetks.be"'), 1)
+        self.assertIn('href="/projects/operator/support/"', support)
+        self.assertNotIn('data-template="support"', operator)
+
+    def test_project_details_use_reader_facing_kinds(self) -> None:
+        public = build_site()
+        self.addCleanup(shutil.rmtree, public)
+        for project, label, raw in (
+            ("operator", "iOS app", "native_app"),
+            ("cybernetks-planner", "Printable planning tool", "planning_tool"),
+            ("alien-miner", "Game", "game"),
+        ):
+            with self.subTest(project=project):
+                html = (public / f"projects/{project}/index.html").read_text(encoding="utf-8")
+                self.assertIn(f"<dt>Kind</dt><dd>{label}</dd>", html)
+                self.assertNotIn(f"<dt>Kind</dt><dd>{raw}</dd>", html)
+
     def test_project_owned_page_links_back_to_its_project(self) -> None:
         # Dropping the owning-project link would strand privacy and support information.
         html = built_html("projects/operator/privacy/index.html")

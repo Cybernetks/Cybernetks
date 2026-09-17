@@ -37,7 +37,10 @@
       <section class="project__facts" aria-labelledby="project-facts">
         <h2 id="project-facts">Project details</h2>
         <dl>
-          {{ with .Params.project_kind }}<div><dt>Kind</dt><dd>{{ . }}</dd></div>{{ end }}
+          {{ with .Params.project_kind }}
+            {{ $kindLabels := dict "native_app" "iOS app" "planning_tool" "Printable planning tool" "game" "Game" }}
+            <div><dt>Kind</dt><dd>{{ index $kindLabels . | default (humanize .) }}</dd></div>
+          {{ end }}
           {{ with .Params.platforms }}<div><dt>Platforms</dt><dd>{{ delimit . ", " }}</dd></div>{{ end }}
           {{ with .Params.release_state }}<div><dt>Current release state</dt><dd>{{ . }}</dd></div>{{ end }}
           {{ with .Params.next }}<div><dt>What comes next</dt><dd>{{ . }}</dd></div>{{ end }}

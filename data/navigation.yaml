@@ -7,6 +7,8 @@ primary:
     url: /snapshots/
   - label: About
     url: /about/
+  - label: Support
+    url: /support/
 footer:
   - label: GitHub
     url: https://github.com/Cybernetks

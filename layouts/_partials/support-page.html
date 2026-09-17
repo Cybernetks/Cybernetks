@@ -1,0 +1,10 @@
+<article class="support" data-template="support">
+  <header class="support__hero">
+    <p class="support__eyebrow">Support the studio</p>
+    <h1>{{ .Title }}</h1>
+    {{ with .Description }}<p class="support__summary">{{ . }}</p>{{ end }}
+  </header>
+  <section class="support__panel" aria-label="Supporting Cybernetks">
+    <div class="support__content">{{ .Content }}</div>
+  </section>
+</article>

@@ -11,7 +11,7 @@ PAGE_REPLACEMENTS = {
     "/about/": "/about/",
     "/topics/": "/logs/",
     "/uses/": "/uses/",
-    "/support/": "/projects/operator/support/",
+    "/support/": "/support/",
     "/cybernetks-planner/": "/projects/cybernetks-planner/",
     "/projects/": "/projects/",
     "/operator-privacy/": "/projects/operator/privacy/",

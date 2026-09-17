@@ -8,7 +8,6 @@ topics: []
 projects: []
 aliases:
 - /operator-support/
-- /support/
 params:
   kind: page
   project: Operator

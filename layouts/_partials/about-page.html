@@ -1,0 +1,47 @@
+<article class="about" data-template="about">
+  <header class="about__hero">
+    <div class="about__hero-copy">
+      <p class="about__eyebrow">Code. Create. Play.</p>
+      <h1>{{ .Title }}</h1>
+      {{ with .Description }}<p class="about__summary">{{ . }}</p>{{ end }}
+    </div>
+    <div class="about__mark" role="img" aria-label="Cybernetks symbol">
+      <img src="/brand/logo.svg" alt="" width="500" height="500">
+    </div>
+  </header>
+
+  <section class="about__story" aria-labelledby="about-story-title">
+    <h2 id="about-story-title">Why I started Cybernetks</h2>
+    <div class="about__story-copy">{{ .Content }}</div>
+  </section>
+
+  <section class="about__section" aria-labelledby="about-projects-title">
+    <div class="about__section-heading">
+      <h2 id="about-projects-title">What I'm building</h2>
+      <a href="/projects/">All projects</a>
+    </div>
+    <div class="project-card-grid">
+      {{ range (slice "/projects/operator/" "/projects/cybernetks-planner/" "/projects/alien-miner/") }}
+        {{ with site.GetPage . }}
+          {{ template "projects/_views/card.html" (dict "page" . "heading" 3) }}
+        {{ end }}
+      {{ end }}
+    </div>
+  </section>
+
+  <section class="about__section" aria-labelledby="about-publications-title">
+    <h2 id="about-publications-title">Follow the work</h2>
+    <div class="about__reading-grid">
+      <article class="about__reading-card">
+        <p class="about__eyebrow">As it happens</p>
+        <h3><a href="/logs/">Logs</a></h3>
+        <p>Progress, decisions, and things I've learned along the way.</p>
+      </article>
+      <article class="about__reading-card">
+        <p class="about__eyebrow">Looking back</p>
+        <h3><a href="/snapshots/">Monthly Snapshots</a></h3>
+        <p>What moved forward, what didn't, and what comes next.</p>
+      </article>
+    </div>
+  </section>
+</article>

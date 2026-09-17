@@ -129,7 +129,7 @@
 - path: /support/
   kind: page
   status: published
-  replacement: /projects/operator/support/
+  replacement: /support/
 - path: /the-developer-roadmap-building-skills-that-compound/
   kind: post
   status: published

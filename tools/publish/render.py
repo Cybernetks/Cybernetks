@@ -140,6 +140,8 @@ def _fixed_page_route(document: SourceDocument) -> str:
     source_parts = document.source_path.parts
     if source_parts[-2:] == ("Pages", "About Cybernetks.md"):
         expected = "/about/"
+    elif source_parts[-2:] == ("Pages", "Support.md"):
+        expected = "/support/"
     elif source_parts[-2:] == ("Pages", "Uses.md"):
         expected = "/uses/"
     elif len(source_parts) >= 3 and source_parts[-3] == "Projects" and source_parts[-1] in {

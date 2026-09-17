@@ -16,6 +16,7 @@ class PublisherConfig:
     )
     files: tuple[tuple[str, ContentKind], ...] = (
         ("3. Businesses/Cybernetks/Pages/About Cybernetks.md", ContentKind.PAGE),
+        ("3. Businesses/Cybernetks/Pages/Support.md", ContentKind.PAGE),
         ("3. Businesses/Cybernetks/Pages/Uses.md", ContentKind.PAGE),
         (
             "3. Businesses/Cybernetks/Projects/Operator/Operator.md",

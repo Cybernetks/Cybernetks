@@ -100,9 +100,9 @@ class BundleRenderTest(unittest.TestCase):
         ):
             bundle_path(privacy)
 
-    def test_about_and_uses_have_fixed_routes_from_their_source_identity(self) -> None:
+    def test_studio_pages_have_fixed_routes_from_their_source_identity(self) -> None:
         # A valid bundle must not be chosen from a route supplied in page front matter.
-        for filename, expected in (("About Cybernetks.md", "/about/"), ("Uses.md", "/uses/")):
+        for filename, expected in (("About Cybernetks.md", "/about/"), ("Uses.md", "/uses/"), ("Support.md", "/support/")):
             with self.subTest(filename=filename), self.assertRaisesRegex(
                 SourceValidationError, rf"{expected}$"
             ):

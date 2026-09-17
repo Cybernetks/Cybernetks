@@ -95,6 +95,8 @@ main {
   padding: clamp(2.5rem, 8vw, 6rem) 0;
 }
 
+main.main--wide { width: min(100% - (var(--page-gutter) * 2), 76rem); }
+
 main > :first-child { margin-top: 0; }
 main > :last-child { margin-bottom: 0; }
 
@@ -208,7 +210,52 @@ pre { overflow-x: auto; padding: 1rem; background: var(--color-slate); border: 1
 .project__facts dd { margin: 0; overflow-wrap: anywhere; }
 .project__supporting-pages ul { display: flex; flex-wrap: wrap; gap: 0.6rem 1rem; margin: 0; padding: 0; list-style: none; }
 
+.about__hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(16rem, 0.75fr);
+  gap: clamp(2rem, 6vw, 5rem);
+  align-items: stretch;
+  padding-bottom: clamp(3rem, 7vw, 5rem);
+  border-bottom: 1px solid var(--color-slate-light);
+}
+.about__hero-copy { align-self: center; }
+.about__eyebrow { margin: 0 0 0.75rem; color: var(--color-gold); font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; }
+.about__hero h1 { margin: 0 0 1rem; }
+.about__summary { max-width: 32rem; margin: 0; color: var(--color-gold); font-size: clamp(1.2rem, 2.6vw, 1.6rem); line-height: 1.4; }
+.about__mark {
+  display: grid;
+  min-height: clamp(18rem, 30vw, 26rem);
+  place-items: center;
+}
+.about__mark img { width: min(70%, 17rem); }
+.about__story { display: grid; grid-template-columns: minmax(0, 0.65fr) minmax(0, 1.35fr); gap: clamp(2rem, 6vw, 5rem); padding: clamp(3rem, 7vw, 5rem) 0; border-bottom: 1px solid var(--color-slate-light); }
+.about__story h2 { margin: 0; }
+.about__story-copy > :first-child { margin-top: 0; }
+.about__story-copy > :last-child { margin-bottom: 0; }
+.about__section { margin-top: clamp(3rem, 8vw, 6rem); }
+.about__section-heading { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.75rem 2rem; }
+.about__section h2 { margin: 0 0 1.5rem; }
+.about__reading-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.about__reading-card { padding: 1.75rem; border: 1px solid var(--color-slate-light); background: var(--color-slate); }
+.about__reading-card h3 { margin: 0 0 0.75rem; }
+.about__reading-card p:last-child { margin-bottom: 0; }
+
+.support__hero { padding-bottom: clamp(2.25rem, 6vw, 4rem); }
+.support__eyebrow { margin: 0 0 0.75rem; color: var(--color-gold); font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; }
+.support__hero h1 { margin: 0 0 1rem; }
+.support__summary { margin: 0; color: var(--color-gold); font-size: clamp(1.2rem, 2.6vw, 1.55rem); line-height: 1.45; }
+.support__panel { padding: clamp(1.5rem, 5vw, 3rem); border: 1px solid var(--color-slate-light); border-top: 2px solid var(--color-gold); background: var(--color-slate); }
+.support__content > :first-child { margin-top: 0; }
+.support__content > :last-child { margin-bottom: 0; }
+.support__content > p:first-child { font-size: 1.12rem; }
+.support__content a[href^="https://buymeacoffee.com/cybernetks"] { display: inline-block; padding: 0.75rem 1.1rem; border: 1px solid var(--color-gold); background: var(--color-gold); color: var(--color-indigo); font-weight: 700; text-decoration: none; }
+.support__content a[href^="https://buymeacoffee.com/cybernetks"]:hover { border-color: var(--color-white); background: var(--color-white); }
+.support__content h2 { margin: 2.5rem 0 0.75rem; padding-top: 1.5rem; border-top: 1px solid var(--color-slate-light); font-size: clamp(1.3rem, 3vw, 1.65rem); }
+
 @media (max-width: 760px) {
+  .about__hero, .about__story, .about__reading-grid { grid-template-columns: 1fr; }
+  .about__mark { min-height: 13rem; }
+  .about__story { gap: 1.5rem; }
   .snapshot-grid { grid-template-columns: 1fr; gap: 0.35rem; }
   .snapshot-grid__label { margin-top: 0; }
   .home-studio-grid,
