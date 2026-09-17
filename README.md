@@ -1,49 +1,13 @@
 # Cybernetks
-## Code • Create • Play
 
-## Local site development
+Code. Create. Play.
 
-Use Python 3.12 and Hugo Extended 0.164.0. Create an isolated Python environment
-and install the pinned dependencies:
+I'm Kenneth Schabrechts. I make games and useful tools under the Cybernetks name, and share what I learn while building them.
 
-```bash
-python3.12 -m venv .venv
-.venv/bin/python -m pip install -r requirements.txt
-```
+Right now I'm working on Operator, an iOS app for focusing on today, and the Cybernetks Planner, a printable tool for planning on paper. Alien Miner is a game I made for a jam.
 
-The site commands are:
+I write Logs about the work as it happens and Monthly Snapshots to look back at what moved forward. You can find my projects and writing at [cybernetks.be](https://cybernetks.be/).
 
-```bash
-make test
-make build
-make preview
-make publish
-```
+I'm also on [YouTube](https://www.youtube.com/@Cybernetks) and [LinkedIn](https://www.linkedin.com/company/cybernetks/).
 
-See [Publishing from Obsidian](docs/editorial-publishing.md) for source metadata,
-public article boundaries, and migration guidance. Day-to-day release instructions
-are in [Publishing](docs/operations/publishing.md); use the human-only
-[GitHub Pages cutover checklist](docs/operations/cutover.md) when moving the live
-domain from Ghost.
-
-One-person dev studio. <br />
-Freelance projects by day, indie games by night. <br />
-Code, creativity & behind-the-scenes.
-
-<ul>
-  <li>Read my blog posts on <a href="https://www.cybernetks.be" target="_blank">Cybernetks.be</a></li>
-  <li>Watch my devlogs, tutorials and more on <a href="https://www.youtube.com/@Cybernetks" target="_blank">YouTube</a></li>
-  <li>Listen to the podcast version of the log on <a href="https://open.spotify.com/show/1yUXmMLARRlLCRrPnfio1r?si=2bWbXj-JQ6uDLvQKX32ztg" target="_blank">Spotify</a></li>
-  <li>Join me in a co-working or live coding session on <a href="https://www.twitch.tv/cybernetks" target="_blank">Twitch</a></li>
-  <li>Play the games and demos on <a href="https://cybernetks.itch.io" target="_blank">Itch.io</a></li>
-  <li>Read my latest updates, short stories and ramblings on <a href="https://www.threads.net/@cybernetks" target="_blank">Threads</a>, <a href="https://bsky.app/profile/cybernetks.bsky.social" target="_blank">BlueSky</a> or <a href="https://www.instagram.com/cybernetks/" target="_blank">Instagram</a></li>
-</ul>
-
-----
-
-![JavaScript](https://img.shields.io/badge/Code-JavaScript-informational?style=flat&logo=javascript&color=F7DF1E)
-![PHP](https://img.shields.io/badge/Code-PHP-informational?style=flat&logo=php&color=777BB4)
-![GDScript](https://img.shields.io/badge/Code-GDScript-informational?style=flat&logo=godotengine&color=478cbf)
-![Symfony](https://img.shields.io/badge/Framework-Symfony-informational?style=flat&logo=symfony&color=000000)
-![Godot](https://img.shields.io/badge/Engine-Godot-informational?style=flat&logo=godotengine&color=478cbf)
-![Apple](https://img.shields.io/badge/System-Apple-informational?style=flat&logo=apple&color=A2AAAD)
+This repository holds the Cybernetks website. If you want to run it locally, see the [site development guide](docs/site-development.md).
