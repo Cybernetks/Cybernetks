@@ -5,7 +5,7 @@ import hashlib
 from pathlib import Path
 import re
 from tools.publish.links import _replace_unprotected
-from tools.publish.models import SourceDocument, SourceValidationError
+from tools.publish.models import ContentKind, SourceDocument, SourceValidationError
 
 
 _EMBED = re.compile(r"!\[\[([^\]\r\n]+)\]\]")
@@ -82,6 +82,11 @@ def _embedded_references(document: SourceDocument) -> list[_Embed]:
         return match.group(0)
 
     _replace_unprotected(document.body, _EMBED, record)
+    if document.kind == ContentKind.PROJECT and "icon" in document.params:
+        icon = document.params["icon"]
+        if not isinstance(icon, str) or not icon.strip():
+            raise _asset_error(document, "icon must be a non-empty asset path")
+        embeds.append(_Embed(reference=icon, alt=""))
     return embeds
 
 

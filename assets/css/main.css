@@ -174,6 +174,11 @@ pre { overflow-x: auto; padding: 1rem; background: var(--color-slate); border: 1
 .home-hero h1 { margin-bottom: 0; }
 .home-section { margin-top: clamp(3.5rem, 10vw, 7rem); }
 .home-section > h2 { margin-bottom: 1.5rem; }
+.layout-breakout {
+  width: min(calc(100vw - (var(--page-gutter) * 2)), 76rem);
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
 .home-studio-grid,
 .project-card-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
 .home-studio-grid__feature { grid-row: span 2; }
@@ -185,7 +190,9 @@ pre { overflow-x: auto; padding: 1rem; background: var(--color-slate); border: 1
 .project-card h2 { font-size: clamp(1.25rem, 3vw, 1.7rem); }
 .project-card p:last-child,
 .home-publication-card p:last-child { margin-bottom: 0; }
-.project-card__icon { width: 3rem; height: 3rem; margin-bottom: 1rem; border-radius: 0.75rem; object-fit: cover; }
+.home-section.layout-breakout .project-card,
+.home-section.layout-breakout .home-publication-card,
+.project-index > .project-card-grid.layout-breakout .project-card { padding: clamp(1.6rem, 3vw, 2rem); }
 .home-publication-list { display: grid; gap: 0; }
 .home-publication-list .home-publication-card { border-width: 1px 0 0; background: transparent; }
 
@@ -261,6 +268,9 @@ pre { overflow-x: auto; padding: 1rem; background: var(--color-slate); border: 1
   .home-studio-grid,
   .project-card-grid { grid-template-columns: 1fr; }
   .home-studio-grid__feature { grid-row: auto; }
+  .home-section.layout-breakout .project-card,
+  .home-section.layout-breakout .home-publication-card,
+  .project-index > .project-card-grid.layout-breakout .project-card { padding: 1.4rem; }
   .project__facts dl > div { grid-template-columns: 1fr; gap: 0.25rem; }
 }
 

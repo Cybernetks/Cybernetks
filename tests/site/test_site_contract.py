@@ -168,6 +168,42 @@ class PublicationTemplateTest(unittest.TestCase):
 
 
 class ProjectTemplateTest(unittest.TestCase):
+    def test_project_icon_stays_on_profile_without_creating_a_card_gap(self) -> None:
+        # The logo is available for the profile, but cards retain a compact text hierarchy.
+        with tempfile.TemporaryDirectory() as directory:
+            content = Path(directory)
+            (content / "_index.md").write_text(
+                "---\ntitle: Cybernetks\n---\n", encoding="utf-8"
+            )
+            projects = content / "projects"
+            operator = projects / "operator"
+            operator.mkdir(parents=True)
+            (projects / "_index.md").write_text(
+                "---\ntitle: Projects\n---\n", encoding="utf-8"
+            )
+            (operator / "_index.md").write_text(
+                "---\ntitle: Operator\nparams:\n  kind: project\n  status: launching\n  icon: OperatorLogoMaster.svg\n---\n",
+                encoding="utf-8",
+            )
+            (operator / "OperatorLogoMaster.svg").write_text(
+                '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 178 178"></svg>',
+                encoding="utf-8",
+            )
+            public = build_site(content)
+            self.addCleanup(shutil.rmtree, public)
+            index = (public / "projects/index.html").read_text(encoding="utf-8")
+            profile = (public / "projects/operator/index.html").read_text(encoding="utf-8")
+
+        self.assertNotIn('class="project-card__icon"', index)
+        self.assertNotIn('class="project-card__topline"', index)
+        self.assertRegex(
+            index,
+            r'<p class="project-card__status">launching</p>\s*<h2>',
+        )
+        self.assertIn(
+            'src="/projects/operator/OperatorLogoMaster.svg"', profile
+        )
+
     def test_project_cards_follow_their_containing_heading_level(self) -> None:
         # Reusing homepage h3 cards directly below the index h1 skips a heading level.
         index = built_html("projects/index.html")
@@ -211,6 +247,16 @@ class ProjectTemplateTest(unittest.TestCase):
 
 
 class HomepageTest(unittest.TestCase):
+    def test_project_focused_grids_break_out_without_widening_latest_publications(self) -> None:
+        # Widening the whole page would also stretch the reading-first publication list.
+        home = built_html("index.html")
+        projects = built_html("projects/index.html")
+
+        self.assertEqual(home.count("layout-breakout"), 2)
+        latest = home[home.index("Latest from the studio") :]
+        self.assertNotIn("layout-breakout", latest)
+        self.assertIn('class="project-card-grid layout-breakout"', projects)
+
     def test_homepage_places_projects_before_latest_publications(self) -> None:
         # Moving publications above projects would reverse the approved product-studio hierarchy.
         html = built_html("index.html")

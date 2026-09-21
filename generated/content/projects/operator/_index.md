@@ -9,6 +9,7 @@ projects: []
 aliases: []
 params:
   kind: project
+  icon: OperatorLogoMaster.svg
   latest_update: /monthly-snapshot-august-2026/
   platforms:
   - iOS

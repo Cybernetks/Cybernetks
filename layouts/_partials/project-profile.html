@@ -12,7 +12,7 @@
       {{ with .Params.icon }}
         {{ $iconName := . }}
         {{ with $project.Resources.GetMatch $iconName }}
-          <img class="project__icon" src="{{ .RelPermalink }}" width="{{ .Width }}" height="{{ .Height }}" alt="">
+          <img class="project__icon" src="{{ .RelPermalink }}"{{ if reflect.IsImageResourceWithMeta . }} width="{{ .Width }}" height="{{ .Height }}"{{ end }} alt="">
         {{ else }}
           <img class="project__icon" src="{{ $iconName }}" alt="">
         {{ end }}

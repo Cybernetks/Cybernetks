@@ -23,6 +23,29 @@ LOG_WITH_MISSING_IMAGE = replace(LOG_WITH_IMAGE, body="![[missing-image.png]]")
 
 
 class PageAssetCollectionTest(unittest.TestCase):
+    def test_project_icon_is_copied_into_its_page_bundle(self) -> None:
+        # Ignoring an icon declared in front matter leaves project cards with a broken resource.
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            project = root / "Projects/Operator"
+            project.mkdir(parents=True)
+            (project / "operator-logo.svg").write_text("<svg/>", encoding="utf-8")
+            document = SourceDocument(
+                source_path=project / "Operator.md",
+                kind=ContentKind.PROJECT,
+                title="Operator",
+                publication_status="published",
+                publish_date=date(2026, 7, 1),
+                summary="A calm place to focus.",
+                url_path="/projects/operator/",
+                params={"icon": "operator-logo.svg"},
+                body="Operator.",
+            )
+
+            copies = collect_assets(document, root)
+
+        self.assertEqual([copy.bundle_name for copy in copies], ["operator-logo.svg"])
+
     def test_embed_is_copied_into_owning_page_bundle(self) -> None:
         copies = collect_assets(LOG_WITH_IMAGE, FIXTURE_VAULT)
 

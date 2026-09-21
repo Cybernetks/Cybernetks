@@ -8,7 +8,7 @@
         <h1>{{ .Title }}</h1>
         {{ .Content }}
       </header>
-      <div class="project-card-grid">
+      <div class="project-card-grid layout-breakout">
         {{ range $projects.ByTitle }}
           {{ template "projects/_views/card.html" (dict "page" . "heading" 2) }}
         {{ end }}
