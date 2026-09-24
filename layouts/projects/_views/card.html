@@ -1,11 +1,10 @@
 {{ $project := .page }}
-<article class="project-card">
-  <p class="project-card__status">{{ $project.Params.status }}</p>
+<article class="project-card interactive-card">
+  <p class="project-card__status">{{ .eyebrow | default $project.Params.status }}</p>
   {{ if eq .heading 2 }}
-    <h2><a href="{{ $project.RelPermalink }}">{{ $project.Title }}</a></h2>
+    <h2><a class="card-title-link card-title-link--stretched" href="{{ $project.RelPermalink }}">{{ $project.Title }}</a></h2>
   {{ else }}
-    <h3><a href="{{ $project.RelPermalink }}">{{ $project.Title }}</a></h3>
+    <h3><a class="card-title-link card-title-link--stretched" href="{{ $project.RelPermalink }}">{{ $project.Title }}</a></h3>
   {{ end }}
   {{ with $project.Params.promise }}<p>{{ . }}</p>{{ end }}
-  <p class="project-card__action"><a href="{{ $project.RelPermalink }}">View project</a></p>
 </article>

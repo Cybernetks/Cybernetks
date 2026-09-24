@@ -183,12 +183,36 @@ pre { overflow-x: auto; padding: 1rem; background: var(--color-slate); border: 1
 .project-card-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
 .project-card,
 .home-publication-card { min-width: 0; padding: 1.4rem; border: 1px solid var(--color-slate-light); background: var(--color-slate); }
-.project-card { display: flex; height: 100%; flex-direction: column; }
+.project-card { height: 100%; }
 .project-card h2,
 .project-card h3,
 .home-publication-card h3 { margin: 0.2rem 0 0.65rem; overflow-wrap: anywhere; }
+.card-title-link { color: var(--color-white); text-decoration: none; }
+.card-title-link:hover,
+.card-title-link:focus-visible { color: var(--color-gold); }
+.interactive-card {
+  position: relative;
+  cursor: pointer;
+  transition: border-color 160ms ease;
+}
+.interactive-card:hover,
+.interactive-card:focus-within { border-color: var(--color-gold); }
+.interactive-card:hover .card-title-link,
+.interactive-card:focus-within .card-title-link { color: var(--color-gold); }
+.interactive-card:focus-within {
+  outline: 0.2rem solid var(--color-gold);
+  outline-offset: 0.25rem;
+}
+.interactive-card .card-title-link:focus-visible { outline: none; }
+.card-title-link--stretched::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+}
 .project-card h2 { font-size: clamp(1.25rem, 3vw, 1.7rem); }
-.project-card__action { margin-top: auto; padding-top: 0.75rem; }
+.footer-nav__link { text-decoration: none; }
+.footer-nav__link:hover,
+.footer-nav__link:focus-visible { text-decoration: underline; }
 .project-card p:last-child,
 .home-publication-card p:last-child { margin-bottom: 0; }
 .home-section.layout-breakout .project-card,

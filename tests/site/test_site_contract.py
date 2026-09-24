@@ -209,8 +209,14 @@ class ProjectTemplateTest(unittest.TestCase):
         index = built_html("projects/index.html")
         home = built_html("index.html")
 
-        self.assertIn('<h2><a href="/projects/operator/">Operator</a></h2>', index)
-        self.assertIn('<h3><a href="/projects/operator/">Operator</a></h3>', home)
+        self.assertRegex(
+            index,
+            r'<h2><a [^>]*href="/projects/operator/">Operator</a></h2>',
+        )
+        self.assertRegex(
+            home,
+            r'<h3><a [^>]*href="/projects/operator/">Operator</a></h3>',
+        )
 
     def test_launching_project_links_to_latest_update(self) -> None:
         # Removing the lifecycle action would leave a work-in-progress project with no real next step.
@@ -247,6 +253,59 @@ class ProjectTemplateTest(unittest.TestCase):
 
 
 class HomepageTest(unittest.TestCase):
+    def test_every_card_has_one_full_surface_link(self) -> None:
+        # Reintroducing a separate project action would create two links to the same destination.
+        home = built_html("index.html")
+        latest = home[home.index("Latest from the studio") :]
+        studio = home[
+            home.index("Inside the studio") : home.index("Projects and experiments")
+        ]
+
+        self.assertGreater(latest.count('class="home-publication-card'), 0)
+        self.assertEqual(
+            latest.count('class="home-publication-card'),
+            latest.count('card-title-link--stretched'),
+        )
+        self.assertEqual(studio.count('<article class='), 3)
+        self.assertEqual(studio.count('card-title-link--stretched'), 3)
+
+        for archive in (built_html("logs/index.html"), built_html("snapshots/index.html")):
+            self.assertGreater(archive.count('<article class="publication-card'), 0)
+            self.assertEqual(
+                archive.count('<article class="publication-card'),
+                archive.count('card-title-link--stretched'),
+            )
+
+        for page in (home, built_html("projects/index.html")):
+            self.assertGreater(page.count('<article class="project-card'), 0)
+            self.assertEqual(
+                page.count('<article class="project-card'),
+                page.count('class="project-card interactive-card"'),
+            )
+            self.assertNotIn("View project", page)
+            self.assertNotIn('class="project-card__action"', page)
+
+        projects = built_html("projects/index.html")
+        self.assertEqual(
+            projects.count('<article class="project-card'),
+            projects.count('card-title-link--stretched'),
+        )
+
+    def test_card_titles_and_footer_links_use_quiet_navigation_hooks(self) -> None:
+        # Navigation links need scoped styling so prose links can keep their underlines.
+        for html in (
+            built_html("index.html"),
+            built_html("logs/index.html"),
+            built_html("snapshots/index.html"),
+        ):
+            self.assertGreater(html.count("<h3><a"), 0)
+            self.assertEqual(
+                html.count("<h3><a"),
+                html.count('<h3><a class="card-title-link'),
+            )
+
+        self.assertIn('class="footer-nav__link"', built_html("index.html"))
+
     def test_inside_studio_keeps_operator_in_the_shared_card_row(self) -> None:
         # A spanning wrapper makes Operator taller than the two cards beside it.
         home = built_html("index.html")
@@ -256,14 +315,19 @@ class HomepageTest(unittest.TestCase):
 
         self.assertNotIn("home-studio-grid__feature", studio)
 
-    def test_every_project_card_exposes_a_bottom_aligned_action(self) -> None:
-        # A card without the action hook cannot keep its link aligned with taller siblings.
-        for html in (built_html("index.html"), built_html("projects/index.html")):
-            self.assertGreater(html.count('class="project-card"'), 0)
-            self.assertEqual(
-                html.count('class="project-card"'),
-                html.count('class="project-card__action"'),
-            )
+    def test_inside_studio_identifies_its_project_without_relabeling_project_grids(self) -> None:
+        # Losing the homepage context would make the first mixed-content card ambiguous.
+        home = built_html("index.html")
+        studio = home[
+            home.index("Inside the studio") : home.index("Projects and experiments")
+        ]
+        projects = home[
+            home.index("Projects and experiments") : home.index("Latest from the studio")
+        ]
+
+        self.assertIn("Featured Project · Launching", studio)
+        self.assertNotIn("Featured Project", projects)
+        self.assertIn('<p class="project-card__status">launching</p>', projects)
 
     def test_project_focused_grids_break_out_without_widening_latest_publications(self) -> None:
         # Widening the whole page would also stretch the reading-first publication list.

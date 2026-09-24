@@ -4,7 +4,7 @@
     <nav aria-label="Cybernetks elsewhere">
       <ul class="footer-nav">
         {{ range site.Data.navigation.footer }}
-          <li><a href="{{ .url }}" target="_blank" rel="noopener noreferrer">{{ .label }}</a></li>
+          <li><a class="footer-nav__link" href="{{ .url }}" target="_blank" rel="noopener noreferrer">{{ .label }}</a></li>
         {{ end }}
       </ul>
     </nav>

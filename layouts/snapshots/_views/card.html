@@ -1,6 +1,6 @@
 {{ $reviewMonth := .Params.review_month | default "" }}
-<article class="publication-card publication-card--snapshot">
+<article class="publication-card publication-card--snapshot interactive-card">
   {{ with $reviewMonth }}<p class="publication-card__meta">Review month: {{ . }}</p>{{ end }}
-  <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+  <h3><a class="card-title-link card-title-link--stretched" href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
   {{ with .Description }}<p>{{ . }}</p>{{ end }}
 </article>

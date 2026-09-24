@@ -13,19 +13,19 @@
     <h2 id="inside-studio">Inside the studio</h2>
     <div class="home-studio-grid">
       {{ with $operator }}
-        {{ template "projects/_views/card.html" (dict "page" . "heading" 3) }}
+        {{ template "projects/_views/card.html" (dict "page" . "heading" 3 "eyebrow" (printf "Featured Project · %s" (.Params.status | humanize))) }}
       {{ end }}
       {{ range first 1 ($logs.ByDate.Reverse) }}
-        <article class="home-publication-card">
+        <article class="home-publication-card interactive-card">
           <p class="publication-card__meta">Latest Log</p>
-          <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+          <h3><a class="card-title-link card-title-link--stretched" href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
           {{ with .Description }}<p>{{ . }}</p>{{ end }}
         </article>
       {{ end }}
       {{ range first 1 ($snapshots.ByDate.Reverse) }}
-        <article class="home-publication-card">
+        <article class="home-publication-card interactive-card">
           <p class="publication-card__meta">Latest Monthly Snapshot</p>
-          <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+          <h3><a class="card-title-link card-title-link--stretched" href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
           {{ with .Description }}<p>{{ . }}</p>{{ end }}
         </article>
       {{ end }}
@@ -47,9 +47,9 @@
     <h2 id="latest-studio">Latest from the studio</h2>
     <div class="home-publication-list">
       {{ range first 6 ($publications.ByDate.Reverse) }}
-        <article class="home-publication-card">
+        <article class="home-publication-card interactive-card">
           <p class="publication-card__meta">{{ .Params.kind }}</p>
-          <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+          <h3><a class="card-title-link card-title-link--stretched" href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
           {{ with .Description }}<p>{{ . }}</p>{{ end }}
         </article>
       {{ end }}

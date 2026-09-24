@@ -1,8 +1,8 @@
-<article class="publication-card publication-card--log">
+<article class="publication-card publication-card--log interactive-card">
   <p class="publication-card__meta">
     <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>
     {{ with .Params.projects }}<span> · {{ delimit . ", " }}</span>{{ end }}
   </p>
-  <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+  <h3><a class="card-title-link card-title-link--stretched" href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
   {{ with .Description }}<p>{{ . }}</p>{{ end }}
 </article>
