@@ -11,7 +11,7 @@ params:
   kind: page
 ---
 
-I build Cybernetks projects because I want to make them. If something I share helps you or you enjoy following the work, you can chip in.
+Cybernetks is an independent studio where I build and release games and tools. If you enjoy following the work or something I share helps you, you can support the studio directly.
 
 [Support Cybernetks on Buy Me a Coffee](https://buymeacoffee.com/cybernetks?ref=cybernetks.be)
 
