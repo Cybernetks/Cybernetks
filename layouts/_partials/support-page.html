@@ -1,10 +1,16 @@
 <article class="support" data-template="support">
   <header class="support__hero">
-    <p class="support__eyebrow">Support the studio</p>
-    <h1>{{ .Title }}</h1>
-    {{ with .Description }}<p class="support__summary">{{ . }}</p>{{ end }}
+    <div class="support__hero-copy">
+      <p class="support__eyebrow">Support the studio</p>
+      <h1>{{ .Title }}</h1>
+      {{ with .Description }}<p class="support__summary">{{ . }}</p>{{ end }}
+    </div>
+    <div class="support__mark" role="img" aria-label="Cybernetks symbol">
+      <img src="/brand/logo.svg" alt="" width="500" height="500">
+    </div>
   </header>
-  <section class="support__panel" aria-label="Supporting Cybernetks">
+  <section class="support__story" aria-labelledby="support-story-title">
+    <h2 id="support-story-title">If you’d like to help</h2>
     <div class="support__content">{{ .Content }}</div>
   </section>
 </article>

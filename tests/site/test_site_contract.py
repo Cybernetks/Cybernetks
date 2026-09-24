@@ -402,7 +402,11 @@ class GenericPageTest(unittest.TestCase):
         operator = (public / "projects/operator/support/index.html").read_text(encoding="utf-8")
 
         self.assertIn('data-template="support"', support)
-        self.assertIn('class="support__panel"', support)
+        self.assertIn('class="main--wide"', support)
+        self.assertIn('aria-label="Cybernetks symbol"', support)
+        self.assertIn('class="support__story"', support)
+        self.assertIn("If you’d like to help", support)
+        self.assertNotIn('class="support__panel"', support)
         self.assertEqual(support.count('href="https://buymeacoffee.com/cybernetks?ref=cybernetks.be"'), 1)
         self.assertIn('href="/projects/operator/support/"', support)
         self.assertNotIn('data-template="support"', operator)
