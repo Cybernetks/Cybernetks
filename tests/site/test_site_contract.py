@@ -247,6 +247,24 @@ class ProjectTemplateTest(unittest.TestCase):
 
 
 class HomepageTest(unittest.TestCase):
+    def test_inside_studio_keeps_operator_in_the_shared_card_row(self) -> None:
+        # A spanning wrapper makes Operator taller than the two cards beside it.
+        home = built_html("index.html")
+        studio = home[
+            home.index("Inside the studio") : home.index("Projects and experiments")
+        ]
+
+        self.assertNotIn("home-studio-grid__feature", studio)
+
+    def test_every_project_card_exposes_a_bottom_aligned_action(self) -> None:
+        # A card without the action hook cannot keep its link aligned with taller siblings.
+        for html in (built_html("index.html"), built_html("projects/index.html")):
+            self.assertGreater(html.count('class="project-card"'), 0)
+            self.assertEqual(
+                html.count('class="project-card"'),
+                html.count('class="project-card__action"'),
+            )
+
     def test_project_focused_grids_break_out_without_widening_latest_publications(self) -> None:
         # Widening the whole page would also stretch the reading-first publication list.
         home = built_html("index.html")

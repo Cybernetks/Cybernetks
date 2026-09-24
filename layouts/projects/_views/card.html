@@ -7,5 +7,5 @@
     <h3><a href="{{ $project.RelPermalink }}">{{ $project.Title }}</a></h3>
   {{ end }}
   {{ with $project.Params.promise }}<p>{{ . }}</p>{{ end }}
-  <p><a href="{{ $project.RelPermalink }}">View project</a></p>
+  <p class="project-card__action"><a href="{{ $project.RelPermalink }}">View project</a></p>
 </article>

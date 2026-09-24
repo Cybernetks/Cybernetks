@@ -13,9 +13,7 @@
     <h2 id="inside-studio">Inside the studio</h2>
     <div class="home-studio-grid">
       {{ with $operator }}
-        <div class="home-studio-grid__feature">
-          {{ template "projects/_views/card.html" (dict "page" . "heading" 3) }}
-        </div>
+        {{ template "projects/_views/card.html" (dict "page" . "heading" 3) }}
       {{ end }}
       {{ range first 1 ($logs.ByDate.Reverse) }}
         <article class="home-publication-card">
