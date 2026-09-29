@@ -12,6 +12,7 @@ from tools.publish.render import (
     apply_migration_aliases,
     bundle_path,
     render_bundle,
+    render_section,
     serialize_document,
 )
 
@@ -52,6 +53,25 @@ PROJECT = SourceDocument(
 
 
 class BundleRenderTest(unittest.TestCase):
+    def test_section_metadata_keeps_its_search_description_and_optional_title(self) -> None:
+        # Regenerating publisher-owned indexes must not erase their page-specific metadata.
+        section = SectionDocument(
+            title="Cybernetks",
+            url_path="/",
+            description="Games, tools, and software built in public.",
+            meta_title="Cybernetks | Games, tools, and software built in public",
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            written = render_section(section, Path(directory))
+            metadata = yaml.safe_load(written.read_text(encoding="utf-8").split("---", 2)[1])
+
+        self.assertEqual(metadata["description"], "Games, tools, and software built in public.")
+        self.assertEqual(
+            metadata["params"]["meta_title"],
+            "Cybernetks | Games, tools, and software built in public",
+        )
+
     def test_numbered_log_keeps_url_but_drops_display_number(self) -> None:
         # Removing title normalization would expose the legacy display number.
         rendered = serialize_document(NUMBERED_LOG)
@@ -102,7 +122,12 @@ class BundleRenderTest(unittest.TestCase):
 
     def test_studio_pages_have_fixed_routes_from_their_source_identity(self) -> None:
         # A valid bundle must not be chosen from a route supplied in page front matter.
-        for filename, expected in (("About Cybernetks.md", "/about/"), ("Uses.md", "/uses/"), ("Support.md", "/support/")):
+        for filename, expected in (
+            ("About Cybernetks.md", "/about/"),
+            ("Privacy & Legal.md", "/privacy/"),
+            ("Uses.md", "/uses/"),
+            ("Support.md", "/support/"),
+        ):
             with self.subTest(filename=filename), self.assertRaisesRegex(
                 SourceValidationError, rf"{expected}$"
             ):

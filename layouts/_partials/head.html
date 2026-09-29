@@ -2,20 +2,35 @@
 {{ $syntax := resources.Get "css/syntax.css" | minify | fingerprint }}
 {{ $description := .Description | default site.Title }}
 {{ $image := .Params.image | default "/images/og-default.png" }}
+{{ $imageAlt := .Params.image_alt | default "Cybernetks, a solo studio building games, tools, and software" }}
+{{ $pageTitle := printf "%s | %s" .Title site.Title }}
+{{ $socialTitle := .Title }}
+{{ if .IsHome }}{{ $pageTitle = site.Title }}{{ end }}
+{{ with .Params.meta_title }}{{ $pageTitle = . }}{{ end }}
+{{ if eq .Kind "404" }}
+  {{ $pageTitle = printf "Page not found | %s" site.Title }}
+  {{ $socialTitle = "Page not found" }}
+  {{ $description = "The page you were looking for could not be found on Cybernetks." }}
+{{ end }}
+{{ $ogType := "website" }}
+{{ if or (eq .Params.kind "log") (eq .Params.kind "snapshot") }}{{ $ogType = "article" }}{{ end }}
 {{ $ogImage := $image }}
 {{ if not (or (hasPrefix $image "http://") (hasPrefix $image "https://")) }}
   {{ $ogImage = $image | absURL }}
 {{ end }}
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} | {{ site.Title }}{{ end }}</title>
+<title>{{ $pageTitle }}</title>
 <meta name="description" content="{{ $description }}">
 <link rel="canonical" href="{{ .Permalink }}">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="stylesheet" href="{{ $main.RelPermalink }}" integrity="{{ $main.Data.Integrity }}">
 <link rel="stylesheet" href="{{ $syntax.RelPermalink }}" integrity="{{ $syntax.Data.Integrity }}">
 <meta property="og:site_name" content="{{ site.Title }}">
-<meta property="og:type" content="website">
-<meta property="og:title" content="{{ .Title }}">
+<meta property="og:type" content="{{ $ogType }}">
+<meta property="og:title" content="{{ $socialTitle }}">
 <meta property="og:description" content="{{ $description }}">
 <meta property="og:url" content="{{ .Permalink }}">
 <meta property="og:image" content="{{ $ogImage }}">
@@ -23,11 +38,12 @@
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
 {{ end }}
-<meta property="og:image:alt" content="Cybernetks">
+<meta property="og:image:alt" content="{{ $imageAlt }}">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="{{ .Title }}">
+<meta name="twitter:title" content="{{ $socialTitle }}">
 <meta name="twitter:description" content="{{ $description }}">
 <meta name="twitter:image" content="{{ $ogImage }}">
+<meta name="twitter:image:alt" content="{{ $imageAlt }}">
 {{ if or .IsHome (eq .Section "logs") (eq .Section "snapshots") }}
   {{ with .OutputFormats.Get "RSS" }}
     <link rel="alternate" type="{{ .MediaType.Type }}" href="{{ .RelPermalink }}" title="{{ site.Title }} RSS">

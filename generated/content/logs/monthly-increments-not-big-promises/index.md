@@ -9,6 +9,7 @@ projects: []
 aliases: []
 params:
   kind: log
+  youtube_url: https://youtu.be/I0_WPH7X1TA
 ---
 
 ▶️

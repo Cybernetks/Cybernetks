@@ -308,7 +308,12 @@ class HtmlContractTest(unittest.TestCase):
             shutil.copytree(self.public, broken_public)
             homepage = broken_public / "index.html"
             html = homepage.read_text(encoding="utf-8")
-            html = html.replace('property="og:description" content="Cybernetks"', "", 1)
+            html = html.replace(
+                'property="og:description" content="Cybernetks is a solo studio where '
+                'Kenneth Schabrechts builds games, tools, and software in public."',
+                "",
+                1,
+            )
             html = html.replace('<main id="main">', "<div>", 1)
             html = html.replace("</main>", "</div>", 1)
             html = html.replace("<h1>", "<h2>", 1).replace("</h1>", "</h2>", 1)

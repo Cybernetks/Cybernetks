@@ -11,6 +11,7 @@ projects: []
 aliases: []
 params:
   kind: log
+  youtube_url: https://youtu.be/xXqljYdaBgY
 ---
 
 I've been working as a freelance consultant for over ten years, mostly on larger web development projects that I could really sink my teeth into.

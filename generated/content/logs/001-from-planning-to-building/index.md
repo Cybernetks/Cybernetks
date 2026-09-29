@@ -10,6 +10,8 @@ projects: []
 aliases: []
 params:
   kind: log
+  podcast_url: https://open.spotify.com/episode/74YuI8ZMxnB1JSFKTGV40D
+  youtube_url: https://youtu.be/kDkSoevxYxk
 ---
 
 [Embedded media](https://open.spotify.com/embed/episode/74YuI8ZMxnB1JSFKTGV40D?si=QcLyEWkkSo-hvTENwaBIdQ&utm_source=oembed)

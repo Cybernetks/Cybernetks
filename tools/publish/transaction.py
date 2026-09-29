@@ -123,10 +123,36 @@ def _extract_document(document: SourceDocument) -> SourceDocument:
 
 def _sections() -> list[SectionDocument]:
     return [
-        SectionDocument(title="Cybernetks", url_path="/"),
-        SectionDocument(title="Logs", url_path="/logs/"),
-        SectionDocument(title="Monthly Snapshots", url_path="/snapshots/"),
-        SectionDocument(title="Projects", url_path="/projects/"),
+        SectionDocument(
+            title="Cybernetks",
+            url_path="/",
+            description=(
+                "Cybernetks is a solo studio where Kenneth Schabrechts builds games, "
+                "tools, and software in public."
+            ),
+            meta_title="Cybernetks | Games, tools, and software built in public",
+        ),
+        SectionDocument(
+            title="Logs",
+            url_path="/logs/",
+            description=(
+                "Notes from building games, tools, and software under the Cybernetks studio."
+            ),
+        ),
+        SectionDocument(
+            title="Monthly Snapshots",
+            url_path="/snapshots/",
+            description=(
+                "Monthly reviews of what moved forward inside the Cybernetks studio."
+            ),
+        ),
+        SectionDocument(
+            title="Projects",
+            url_path="/projects/",
+            description=(
+                "Games, tools, and software built and released by the Cybernetks studio."
+            ),
+        ),
     ]
 
 

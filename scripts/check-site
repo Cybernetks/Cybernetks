@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-./scripts/check-hugo
+project_root="$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd -P)"
+check_python="$project_root/.venv/bin/python"
+
+if [[ ! -x "$check_python" ]]; then
+  printf '%s\n' 'error: Python 3.12 virtual environment is required at .venv. Create it with: python3.12 -m venv .venv' >&2
+  exit 1
+fi
+
+"$project_root/scripts/check-hugo"
 hugo --gc --minify --cleanDestinationDir
-python3 -m unittest discover -s tests -p 'test_*.py' -v
+"$check_python" -m unittest discover -s tests -p 'test_*.py' -v

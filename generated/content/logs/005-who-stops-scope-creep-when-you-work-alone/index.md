@@ -11,6 +11,7 @@ projects: []
 aliases: []
 params:
   kind: log
+  youtube_url: https://youtu.be/w2Okn_bdJhI
 ---
 
 Scope creep. As developers, we do not like hearing those words.

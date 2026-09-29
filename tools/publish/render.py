@@ -22,6 +22,8 @@ class SectionDocument:
 
     title: str
     url_path: str
+    description: str = ""
+    meta_title: str = ""
     aliases: list[str] = field(default_factory=list)
 
 
@@ -73,17 +75,15 @@ def render_section(section: SectionDocument, destination: Path) -> Path:
     route = _route_parts(section.url_path, allow_root=True)
     written = Path(destination) / (Path(*route) / "_index.md" if route else Path("_index.md"))
     written.parent.mkdir(parents=True, exist_ok=True)
-    written.write_text(
-        _serialize(
-            {
-                "title": section.title,
-                "url": section.url_path,
-                "aliases": sorted(_unique_aliases(section.aliases)),
-            },
-            "",
-        ),
-        encoding="utf-8",
-    )
+    metadata: dict[str, object] = {
+        "title": section.title,
+        "description": section.description,
+        "url": section.url_path,
+        "aliases": sorted(_unique_aliases(section.aliases)),
+    }
+    if section.meta_title:
+        metadata["params"] = {"meta_title": section.meta_title}
+    written.write_text(_serialize(metadata, ""), encoding="utf-8")
     return written
 
 
@@ -140,6 +140,8 @@ def _fixed_page_route(document: SourceDocument) -> str:
     source_parts = document.source_path.parts
     if source_parts[-2:] == ("Pages", "About Cybernetks.md"):
         expected = "/about/"
+    elif source_parts[-2:] == ("Pages", "Privacy & Legal.md"):
+        expected = "/privacy/"
     elif source_parts[-2:] == ("Pages", "Support.md"):
         expected = "/support/"
     elif source_parts[-2:] == ("Pages", "Uses.md"):

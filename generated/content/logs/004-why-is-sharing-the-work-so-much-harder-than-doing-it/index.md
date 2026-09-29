@@ -11,6 +11,7 @@ projects: []
 aliases: []
 params:
   kind: log
+  youtube_url: https://youtu.be/zH2uefVlyMA
 ---
 
 I know it has been a while. The last log was about releasing the planner, and since then I have been working on a digital version: an iOS app.

@@ -10,6 +10,32 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 class PublishWrapperTest(unittest.TestCase):
+    def test_check_wrapper_uses_project_venv_instead_of_host_python(self) -> None:
+        # A host Python older than 3.11 cannot import or execute this project's test suite.
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            repository = self._repository_copy(root, include_venv=False)
+            python = repository / ".venv/bin/python"
+            python.parent.mkdir(parents=True)
+            python.write_text(
+                "#!/bin/sh\necho 'project Python ran the tests'\nexit 0\n",
+                encoding="utf-8",
+            )
+            python.chmod(0o755)
+            commands = self._command_shims(root)
+
+            result = subprocess.run(
+                ["./scripts/check-site"],
+                cwd=repository,
+                env={**os.environ, "PATH": f"{commands}:{os.defpath}"},
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertIn("project Python ran the tests", result.stdout)
+            self.assertNotIn("default python has no PyYAML", result.stderr)
+
     def test_wrapper_uses_project_venv_when_default_python_lacks_pyyaml(self) -> None:
         # Reverting to `python3` would run this shim and fail before publishing.
         with tempfile.TemporaryDirectory() as directory:

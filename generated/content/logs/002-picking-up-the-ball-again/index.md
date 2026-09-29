@@ -11,6 +11,7 @@ projects: []
 aliases: []
 params:
   kind: log
+  youtube_url: https://youtu.be/21PirylClxA
 ---
 
 Listen on [Spotify](https://open.spotify.com/episode/7uR1Eb0tyOjBuKxJbUclTS?si=tlXt9TE6T2qDgeQASqYzEw) or watch on [YouTube](https://youtu.be/21PirylClxA)

@@ -25,7 +25,11 @@
 
   {{ with $screenshots }}
     <section class="project__media" aria-label="Project media">
-      {{ range . }}{{ with $project.Resources.GetMatch . }}<figure><img src="{{ .RelPermalink }}" width="{{ .Width }}" height="{{ .Height }}" alt=""></figure>{{ end }}{{ end }}
+      {{ range . }}
+        {{ $source := .src }}
+        {{ $alt := .alt }}
+        {{ with $project.Resources.GetMatch $source }}<figure><img src="{{ .RelPermalink }}" width="{{ .Width }}" height="{{ .Height }}" alt="{{ $alt }}"></figure>{{ end }}
+      {{ end }}
     </section>
   {{ end }}
 

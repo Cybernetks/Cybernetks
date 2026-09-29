@@ -12,6 +12,125 @@ from tools.publish.transaction import publish
 
 
 class HugoSmokeTest(unittest.TestCase):
+    def test_custom_404_uses_the_site_shell_and_recovery_links(self) -> None:
+        # Without a generated 404.html GitHub Pages falls back to its technical error screen.
+        public = build_site()
+        html = (public / "404.html").read_text(encoding="utf-8")
+        self.addCleanup(shutil.rmtree, public)
+
+        self.assertIn('data-template="not-found"', html)
+        self.assertIn("This page could not be found", html)
+        self.assertIn(
+            '<meta name="description" content="The page you were looking for could not be found on Cybernetks.">',
+            html,
+        )
+        for route in ("/", "/projects/", "/logs/"):
+            self.assertIn(f'href="{route}"', html)
+
+    def test_site_emits_and_links_a_complete_favicon_set(self) -> None:
+        # Browsers should not need to probe a missing /favicon.ico fallback.
+        public = build_site()
+        html = (public / "index.html").read_text(encoding="utf-8")
+        self.addCleanup(shutil.rmtree, public)
+
+        for asset in ("favicon.ico", "favicon.svg", "apple-touch-icon.png"):
+            self.assertTrue((public / asset).is_file(), asset)
+        self.assertIn('rel="icon" href="/favicon.svg" type="image/svg+xml"', html)
+        self.assertIn('rel="icon" href="/favicon.ico" sizes="any"', html)
+        self.assertIn('rel="apple-touch-icon" href="/apple-touch-icon.png"', html)
+
+    def test_robots_names_the_canonical_sitemap(self) -> None:
+        # A valid but bare robots file makes sitemap discovery unnecessarily implicit.
+        public = build_site()
+        robots = (public / "robots.txt").read_text(encoding="utf-8")
+        self.addCleanup(shutil.rmtree, public)
+
+        self.assertIn("User-agent: *", robots)
+        self.assertIn("Sitemap: https://cybernetks.be/sitemap.xml", robots)
+
+    def test_section_pages_have_page_specific_search_metadata(self) -> None:
+        # Falling back to the site name makes four distinct landing pages indistinguishable.
+        public = build_site()
+        self.addCleanup(shutil.rmtree, public)
+
+        expected = {
+            "index.html": (
+                "Cybernetks | Games, tools, and software built in public",
+                "Cybernetks is a solo studio where Kenneth Schabrechts builds games, tools, and software in public.",
+            ),
+            "logs/index.html": (
+                "Logs | Cybernetks",
+                "Notes from building games, tools, and software under the Cybernetks studio.",
+            ),
+            "snapshots/index.html": (
+                "Monthly Snapshots | Cybernetks",
+                "Monthly reviews of what moved forward inside the Cybernetks studio.",
+            ),
+            "projects/index.html": (
+                "Projects | Cybernetks",
+                "Games, tools, and software built and released by the Cybernetks studio.",
+            ),
+        }
+        for relative, (title, description) in expected.items():
+            with self.subTest(relative=relative):
+                html = (public / relative).read_text(encoding="utf-8")
+                self.assertIn(f"<title>{title}</title>", html)
+                self.assertIn(f'<meta name="description" content="{description}">', html)
+
+    def test_open_graph_metadata_supports_content_type_and_descriptive_images(self) -> None:
+        # Treating publications as generic websites and every image as "Cybernetks" loses context.
+        with tempfile.TemporaryDirectory() as directory:
+            content = Path(directory)
+            (content / "_index.md").write_text(
+                "---\ntitle: Cybernetks\ndescription: Studio home.\n---\n", encoding="utf-8"
+            )
+            logs = content / "logs"
+            article = logs / "article"
+            article.mkdir(parents=True)
+            (logs / "_index.md").write_text(
+                "---\ntitle: Logs\ndescription: Studio logs.\n---\n", encoding="utf-8"
+            )
+            (article / "index.md").write_text(
+                "---\ntitle: Article\ndescription: Article description.\nimage: /images/og-default.png\nimage_alt: A gold Cybernetks mark on an indigo background\nparams:\n  kind: log\n---\n\nArticle body.",
+                encoding="utf-8",
+            )
+            public = build_site(content)
+            html = (public / "logs/article/index.html").read_text(encoding="utf-8")
+
+        self.assertIn('property="og:type" content="article"', html)
+        self.assertIn(
+            'property="og:image:alt" content="A gold Cybernetks mark on an indigo background"',
+            html,
+        )
+        self.assertIn(
+            'name="twitter:image:alt" content="A gold Cybernetks mark on an indigo background"',
+            html,
+        )
+
+    def test_project_screenshots_keep_authored_alt_text(self) -> None:
+        # Empty alt text would hide meaningful product screenshots from screen-reader users.
+        with tempfile.TemporaryDirectory() as directory:
+            content = Path(directory)
+            (content / "_index.md").write_text(
+                "---\ntitle: Cybernetks\ndescription: Studio home.\n---\n", encoding="utf-8"
+            )
+            project = content / "projects/operator"
+            project.mkdir(parents=True)
+            (content / "projects/_index.md").write_text(
+                "---\ntitle: Projects\ndescription: Studio projects.\n---\n", encoding="utf-8"
+            )
+            (project / "_index.md").write_text(
+                "---\ntitle: Operator\ndescription: A focused app.\nparams:\n  kind: project\n  status: launching\n  screenshots:\n    - src: preview.png\n      alt: Operator showing today's focused tasks\n---\n",
+                encoding="utf-8",
+            )
+            (project / "preview.png").write_bytes(
+                (ROOT / "static/images/og-default.png").read_bytes()
+            )
+            public = build_site(content)
+            html = (public / "projects/operator/index.html").read_text(encoding="utf-8")
+
+        self.assertIn("alt=\"Operator showing today&#39;s focused tasks\"", html)
+
     def test_built_public_tree_satisfies_the_deployment_contract(self) -> None:
         # A successful Hugo render can still contain a broken emitted reference or route.
         public = build_site()
@@ -365,6 +484,18 @@ class HomepageTest(unittest.TestCase):
 
 
 class GenericPageTest(unittest.TestCase):
+    def test_privacy_page_is_linked_from_the_site_footer(self) -> None:
+        public = build_site()
+        self.addCleanup(shutil.rmtree, public)
+        home = (public / "index.html").read_text(encoding="utf-8")
+        privacy = (public / "privacy/index.html").read_text(encoding="utf-8")
+
+        self.assertIn('href="/privacy/"', home)
+        self.assertIn("Privacy &amp; Legal", home)
+        self.assertIn("How this website handles information", privacy)
+        self.assertIn("GitHub Pages", privacy)
+        self.assertIn("does not currently use cookies or analytics", privacy)
+
     def test_about_has_a_distinct_studio_layout_with_project_and_publication_paths(self) -> None:
         public = build_site()
         self.addCleanup(shutil.rmtree, public)
