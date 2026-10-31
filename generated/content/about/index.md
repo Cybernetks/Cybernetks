@@ -5,7 +5,8 @@ description: I build games and useful tools, and share what I learn along the wa
 url: /about/
 topics: []
 projects: []
-aliases: []
+aliases:
+- /uses/
 params:
   kind: page
 ---

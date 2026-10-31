@@ -52,7 +52,7 @@ class GhostManifestTests(unittest.TestCase):
             {"path": "/projects/", "kind": "page", "status": "published", "replacement": "/projects/"},
             {"path": "/support/", "kind": "page", "status": "published", "replacement": "/support/"},
             {"path": "/topics/", "kind": "page", "status": "published", "replacement": "/logs/"},
-            {"path": "/uses/", "kind": "page", "status": "published", "replacement": "/uses/"},
+            {"path": "/uses/", "kind": "page", "status": "published", "replacement": "/about/"},
             {"path": "/z-log/", "kind": "post", "status": "published", "replacement": "/z-log/"},
         ])
 

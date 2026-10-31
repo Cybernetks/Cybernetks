@@ -10,7 +10,7 @@ import yaml
 PAGE_REPLACEMENTS = {
     "/about/": "/about/",
     "/topics/": "/logs/",
-    "/uses/": "/uses/",
+    "/uses/": "/about/",
     "/support/": "/support/",
     "/cybernetks-planner/": "/projects/cybernetks-planner/",
     "/projects/": "/projects/",

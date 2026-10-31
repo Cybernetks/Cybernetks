@@ -149,7 +149,7 @@
 - path: /uses/
   kind: page
   status: published
-  replacement: /uses/
+  replacement: /about/
 - path: /why-im-building-this-studio/
   kind: post
   status: published
