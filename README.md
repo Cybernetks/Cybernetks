@@ -11,3 +11,5 @@ I write Logs about the work as it happens and Monthly Snapshots to look back at 
 I'm also on [YouTube](https://www.youtube.com/@Cybernetks) and [LinkedIn](https://www.linkedin.com/company/cybernetks/).
 
 This repository holds the Cybernetks website. If you want to run it locally, see the [site development guide](docs/site-development.md).
+
+Bear holds the private studio record. Public adaptations are reviewed in this repository before GitHub Pages can deploy them; see the [publishing workflow](docs/operations/publishing.md).

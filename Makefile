@@ -16,5 +16,5 @@ build: hugo-preflight
 preview: hugo-preflight
 	hugo server --disableFastRender
 
-publish: hugo-preflight
+publish:
 	./scripts/publish-site

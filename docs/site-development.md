@@ -21,8 +21,8 @@ make preview
 make publish
 ```
 
-See [Publishing from Obsidian](editorial-publishing.md) for source metadata,
-public article boundaries, and migration guidance. Day-to-day release instructions
+See [Publishing from Bear](editorial-publishing.md) for the private/public boundary,
+source metadata, and public article guidance. Day-to-day release instructions
 are in [Publishing](operations/publishing.md); use the human-only
 [GitHub Pages cutover checklist](operations/cutover.md) when moving the live
 domain from Ghost.

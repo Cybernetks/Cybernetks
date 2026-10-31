@@ -1,65 +1,66 @@
-# Publishing from Obsidian
+# Publishing from Bear
 
-Obsidian is the editorial source. Run `CYBERNETKS_VAULT="/path/to/vault" ./scripts/publish-site`
-from this repository to validate the approved sources, regenerate `generated/content`,
-and build the site. Use the pinned Python and Hugo versions described in the README.
-Review and commit the generated output; editing generated Markdown directly will be
-overwritten by the next publication run.
+Bear is the private editorial workspace and second brain. It contains operational,
+personal, and project context that must never be exposed by an automated bulk export.
+The website therefore uses an explicit public adaptation layer under
+`generated/content/`. Despite the legacy directory name, these files are now reviewed
+publication sources and may be edited deliberately.
 
-The publisher only reads the explicit Cybernetks source allowlist in
-`tools/publish/config.py`, and only publishes notes with `publication_status: published`.
-Published notes need `title`, `publish_date`, `summary`, and `url`. Keep existing public
-URLs stable even when a title changes. Snapshots also need `review_month: YYYY-MM`.
-Project notes need `status`, `promise`, and `project_kind`.
+The boundary is intentional:
 
-The publisher exports only supported public metadata. Common optional fields are
-`topics`, `projects`, `aliases`, and `image`. Logs may also use `youtube_url`,
-`podcast_url`, `youtube`, and `podcast`; Snapshots use `review_month` and derive their
-structured sections from the public body. Projects may use `icon`, `screenshots`,
-`why`, `capabilities`, `platforms`, `release_state`, `next`, `latest_update`,
-`beta_url`, `store_url`, `app_url`, `source_url`, and `project_url`. Supporting pages
-may use `project`. Other note properties are ignored, including vault classifications,
-internal dates, nested `params`, and editorial notes. Keep only public values in
-these supported fields; add new supported fields deliberately in the publisher.
+- Bear owns the complete internal record and the evidence behind a publication.
+- `generated/content/` owns the wording and metadata approved for the public website.
+- GitHub Actions reads only the repository. It never connects to Bear.
+- `make publish` validates and builds the reviewed public content. It does not copy,
+  overwrite, commit, push, or deploy anything.
 
-## Log article boundaries
+For a Monthly Snapshot, first complete the internal review in Bear. Then create a public
+adaptation at `generated/content/snapshots/YYYY-MM/index.md`. Remove private client,
+family, financial, and operational detail unless it is deliberately part of the public
+story. Bear wikilinks must become public site links or plain text.
 
-Use `# Blog post` immediately before the website article. It ends at the next
-level-one heading. Article subsections can use `##` and `###` freely. Optional
-podcast, YouTube, social, and transcript sections belong under separate level-one
-headings after the article. A Log can be published without any of those adaptations.
+## Public metadata
+
+Every public page uses Hugo front matter with `title`, `date`, `description`, `url`,
+`topics`, `projects`, `aliases`, and `params.kind`. Keep an existing `url` stable even
+when its title changes.
+
+Snapshots additionally use:
+
+- `params.review_month` in `YYYY-MM` form;
+- `params.one_sentence` for the opening statement; and
+- ordered `params.sections` entries with `number`, `title`, and Markdown `body`.
+
+Projects and Logs retain their existing kind-specific fields. Use an existing published
+file as the template rather than inventing new metadata. The retired Obsidian converter
+under `tools/publish/` remains only as tested migration tooling; it is not part of the
+current release workflow.
+
+## Public body boundaries
+
+The repository page bundle contains only the public article or page body. Editorial
+notes, raw transcripts, social drafts, private roadmaps, and pricing analysis remain
+in Bear. Adaptations such as YouTube or podcast links belong in supported public front
+matter, not as copied private sections.
 
 ```markdown
-# Log title
-
-# Blog post
-
 The article to publish.
 
 ## An article subsection
 
 More article text.
-
-# Raw Transcript
-
-Private editorial source material; excluded from the website article.
 ```
 
-The legacy `## Published Content` marker consumes the rest of a note; do not put
-private editorial material after it without an explicit `# Blog post` boundary.
-For supporting pages and projects, `## Website Content` consumes the rest of the
-note. Keep private roadmap, pricing, and planning material before that marker.
-When all headings inside `Website Content` are nested below level two, publication
-promotes them together so the first level is `##`, preserving their relative
-hierarchy and leaving fenced code examples unchanged.
+Bear headings such as `# Blog post`, `# Raw Transcript`, `## Published Content`, and
+`## Website Content` are editorial boundaries only. Do not copy those wrapper headings
+into the public page bundle.
 
 ## Links and images
 
-Link to a canonical public route or use a wiki link to another approved published
-note. The publisher rejects wiki links to private or unresolved notes. Use explicit
-local embeds such as `![[assets/screenshot.png|Descriptive alternative text]]` for
-images that should be copied into the page bundle. Do not retain Ghost export
-placeholders such as `__GHOST_URL__`.
+Link to a canonical public route. Do not copy Bear wikilinks into public Markdown.
+Place public images in the owning page bundle and reference them with ordinary Markdown,
+including descriptive alternative text. Do not retain Ghost export placeholders such
+as `__GHOST_URL__`.
 
 The migration manifest in `data/migration/ghost.yaml` contains public routes only.
 Do not commit the Ghost export or copy member, account, or settings data into this
