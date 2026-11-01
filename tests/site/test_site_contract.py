@@ -496,7 +496,7 @@ class GenericPageTest(unittest.TestCase):
         self.assertIn("GitHub Pages", privacy)
         self.assertIn("does not currently use cookies or analytics", privacy)
 
-    def test_about_has_a_distinct_studio_layout_with_project_and_publication_paths(self) -> None:
+    def test_about_has_a_distinct_studio_layout_and_replaces_uses(self) -> None:
         public = build_site()
         self.addCleanup(shutil.rmtree, public)
         about = (public / "about/index.html").read_text(encoding="utf-8")
@@ -513,7 +513,9 @@ class GenericPageTest(unittest.TestCase):
             "/snapshots/",
         ):
             self.assertIn(f'href="{route}"', about)
-        self.assertIn('data-template="page"', uses)
+        self.assertIn('rel="canonical" href="https://cybernetks.be/about/"', uses)
+        self.assertIn('http-equiv="refresh" content="0; url=https://cybernetks.be/about/"', uses)
+        self.assertNotIn('data-template="page"', uses)
         self.assertNotIn('data-template="about"', uses)
 
     def test_studio_support_is_its_own_page(self) -> None:
