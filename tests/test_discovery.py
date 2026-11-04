@@ -20,7 +20,7 @@ class TestDiscoveryTest(unittest.TestCase):
         discovered = list(cases(suite))
         for name in (
             "test_snapshot_has_aligned_numbered_sections",
-            "test_launching_project_links_to_latest_update",
+            "test_operator_release_links_to_app_store",
             "test_homepage_places_projects_before_latest_publications",
             "test_project_owned_page_links_back_to_its_project",
             "test_pages_workflow_builds_before_deploying",

@@ -337,12 +337,15 @@ class ProjectTemplateTest(unittest.TestCase):
             r'<h3><a [^>]*href="/projects/operator/">Operator</a></h3>',
         )
 
-    def test_launching_project_links_to_latest_update(self) -> None:
-        # Removing the lifecycle action would leave a work-in-progress project with no real next step.
-        html = built_html("projects/operator/index.html")
+    def test_operator_release_links_to_app_store(self) -> None:
+        # A released native app should send visitors to the genuine store listing.
+        html = built_html("projects/operator/index.html", ROOT / "generated/content")
 
-        self.assertIn('href="/005-who-stops-scope-creep-when-you-work-alone/"', html)
-        self.assertIn("Read the latest update", html)
+        self.assertIn(
+            'href="https://apps.apple.com/us/app/operator-daily-focus/id6819861949"',
+            html,
+        )
+        self.assertIn("Download on the App Store", html)
 
     def test_released_native_project_uses_store_action(self) -> None:
         # Treating native releases as generic project links would hide the genuine store destination.
