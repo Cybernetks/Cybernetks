@@ -13,6 +13,9 @@ params:
   project: Operator
 ---
 
+**Operator has its own website.** Find the current [Operator support information](https://operator.cybernetks.be/support/) there. The previous information is retained below for existing links.
+
+
 Need help with Operator, want to report a problem, or have a suggestion? Email [operator@cybernetks.be](mailto:operator@cybernetks.be).
 
 Support messages are reviewed as availability permits. A specific response time is not guaranteed, but providing the details below helps us investigate efficiently.

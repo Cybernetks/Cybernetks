@@ -13,6 +13,9 @@ params:
   project: Operator
 ---
 
+**Operator has its own website.** Find the current [Operator privacy policy](https://operator.cybernetks.be/privacy/) there. The previous information is retained below for existing links.
+
+
 **Effective date: August 1, 2026**
 
 Operator is a productivity app published by Cybernetks. This policy explains how information is handled when you use Operator or contact us for support.

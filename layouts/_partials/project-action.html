@@ -1,5 +1,8 @@
 {{ $page := .page }}
 {{ $actions := index site.Data "project-actions" }}
+{{ with $page.Params.website_url }}
+  <a class="project-primary-action" href="{{ . }}" target="_blank" rel="noopener noreferrer">Visit {{ $page.Title }} website</a>
+{{ else }}
 {{ with $page.Params.status }}
   {{ with index $actions . }}
     {{ $label := .label }}
@@ -19,4 +22,5 @@
       {{ end }}
     {{ end }}
   {{ end }}
+{{ end }}
 {{ end }}

@@ -337,15 +337,36 @@ class ProjectTemplateTest(unittest.TestCase):
             r'<h3><a [^>]*href="/projects/operator/">Operator</a></h3>',
         )
 
-    def test_operator_release_links_to_app_store(self) -> None:
-        # A released native app should send visitors to the genuine store listing.
+    def test_operator_links_to_its_dedicated_website(self) -> None:
         html = built_html("projects/operator/index.html", ROOT / "generated/content")
 
-        self.assertIn(
-            'href="https://apps.apple.com/us/app/operator-daily-focus/id6819861949"',
+        self.assertRegex(
             html,
+            r'class="project-primary-action" href="https://operator\.cybernetks\.be/"[^>]*>Visit Operator website</a>',
         )
-        self.assertIn("Download on the App Store", html)
+        for destination in ("support", "privacy"):
+            self.assertIn(
+                f'href="https://operator.cybernetks.be/{destination}/"', html
+            )
+
+    def test_old_operator_pages_keep_content_and_clickable_move_notices(self) -> None:
+        public = build_site()
+        self.addCleanup(shutil.rmtree, public)
+        for slug, retained_text in (
+            ("support", "Before deleting or reinstalling Operator"),
+            ("privacy", "Effective date: August 1, 2026"),
+        ):
+            with self.subTest(page=slug):
+                html = (public / f"projects/operator/{slug}/index.html").read_text(encoding="utf-8")
+                self.assertIn("Operator has its own website.", html)
+                self.assertIn(f'href="https://operator.cybernetks.be/{slug}/"', html)
+                self.assertIn(retained_text, html)
+                self.assertNotIn('http-equiv="refresh"', html)
+                self.assertIn(
+                    f'rel="canonical" href="https://cybernetks.be/projects/operator/{slug}/"',
+                    html,
+                )
+                self.assertTrue((public / f"operator-{slug}/index.html").is_file())
 
     def test_released_native_project_uses_store_action(self) -> None:
         # Treating native releases as generic project links would hide the genuine store destination.
